@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Compliance Leader — Enterprise Platform Presentation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg:       #080C14;
+    --surface:  #0D1421;
+    --surface2: #111827;
+    --primary:  #00D4FF;
+    --success:  #00E5A0;
+    --warning:  #FFB800;
+    --danger:   #FF4444;
+    --purple:   #7B2FBE;
+    --text:     #F0F6FF;
+    --muted:    #8A95A8;
+    --dimmed:   #4A5568;
+    --border:   rgba(255,255,255,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* ── Slide Container ── */
+  .presentation {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+  }
+
+  .slide {
+    display: none;
+    width: 100%;
+    height: 100%;
+    padding: 60px 80px;
+    position: relative;
+    overflow: hidden;
+    animation: slideIn 0.4s ease;
+  }
+  .slide.active { display: flex; flex-direction: column; }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(30px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  /* ── Background Effects ── */
+  .slide::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%);
+    top: -200px; right: -200px;
+    pointer-events: none;
+  }
+  .slide::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(123,47,190,0.05) 0%, transparent 70%);
+    bottom: -100px; left: -100px;
+    pointer-events: none;
+  }
+
+  /* ── Navigation ── */
+  .nav {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(13,20,33,0.92);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    padding: 10px 20px;
+    backdrop-filter: blur(20px);
+    z-index: 1000;
+  }
+
+  .nav button {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 20px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .nav button:hover { color: var(--primary); background: rgba(0,212,255,0.1); }
+
+  .slide-counter {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    min-width: 60px;
+    text-align: center;
+  }
+
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--purple));
+    transition: width 0.3s ease;
+    z-index: 1000;
+  }
+
+  /* ── Typography ── */
+  .slide-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .slide-label::before {
+    content: '';
+    width: 24px;
+    height: 2px;
+    background: var(--primary);
+    display: inline-block;
+  }
+
+  h1 {
+    font-size: 56px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 20px;
+  }
+  h2 {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 24px;
+  }
+  h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 18px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 700px;
+  }
+
+  /* ── Card Components ── */
+  .card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    transition: all 0.2s;
+  }
+
+  .card-grid {
+    display: grid;
+    gap: 16px;
+  }
+  .card-grid-2 { grid-template-columns: 1fr 1fr; }
+  .card-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .card-grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+  .feature-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .feature-card .icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+  .feature-card h3 { font-size: 15px; color: var(--text); margin-bottom: 6px; }
+  .feature-card p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  /* ── Accent Cards ── */
+  .accent-card {
+    background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(0,212,255,0.03));
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .accent-card.purple {
+    background: linear-gradient(135deg, rgba(123,47,190,0.1), rgba(123,47,190,0.03));
+    border-color: rgba(123,47,190,0.25);
+  }
+  .accent-card.green {
+    background: linear-gradient(135deg, rgba(0,229,160,0.08), rgba(0,229,160,0.02));
+    border-color: rgba(0,229,160,0.2);
+  }
+  .accent-card.amber {
+    background: linear-gradient(135deg, rgba(255,184,0,0.08), rgba(255,184,0,0.02));
+    border-color: rgba(255,184,0,0.2);
+  }
+
+  /* ── List Styles ── */
+  .check-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .check-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .check-list li::before {
+    content: '✓';
+    color: var(--success);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── Code Block ── */
+  .code-block {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--primary);
+    line-height: 1.8;
+    overflow-x: auto;
+  }
+
+  /* ── Badge ── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .badge-cyan { background: rgba(0,212,255,0.15); color: var(--primary); border: 1px solid rgba(0,212,255,0.3); }
+  .badge-green { background: rgba(0,229,160,0.15); color: var(--success); border: 1px solid rgba(0,229,160,0.3); }
+  .badge-purple { background: rgba(123,47,190,0.15); color: #A855F7; border: 1px solid rgba(123,47,190,0.3); }
+  .badge-amber { background: rgba(255,184,0,0.15); color: var(--warning); border: 1px solid rgba(255,184,0,0.3); }
+
+  /* ── Table ── */
+  .slide-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .slide-table th {
+    text-align: left;
+    padding: 10px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .slide-table td {
+    padding: 12px 16px;
+    color: var(--text);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: middle;
+  }
+  .slide-table tr:last-child td { border-bottom: none; }
+  .slide-table tr:hover td { background: rgba(0,212,255,0.03); }
+
+  /* ── Flow Diagram ── */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .flow-step {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .flow-arrow { color: var(--muted); font-size: 18px; }
+
+  /* ── Stat Boxes ── */
+  .stat-boxes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .stat-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat-box .num {
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-box .label { font-size: 11px; color: var(--muted); margin-top: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* ── Title Slide ── */
+  .title-slide {
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+  }
+  .title-slide .logo {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 32px;
+    box-shadow: 0 16px 48px rgba(0,212,255,0.3);
+  }
+
+  /* ── Divider ── */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary), var(--purple), transparent);
+    margin: 24px 0;
+    opacity: 0.4;
+  }
+
+  /* ── Slide Number Indicator ── */
+  .slide-number {
+    position: absolute;
+    top: 28px;
+    right: 60px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--dimmed);
+  }
+
+  /* ── Two-Column Layout ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    flex: 1;
+    align-items: start;
+  }
+
+  /* ── Scrollable Content ── */
+  .scroll-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 8px;
+  }
+
+  /* ── Arch Diagram ── */
+  .arch-box {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* Keyboard hint */
+  .kbd-hint {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    font-size: 11px;
+    color: var(--dimmed);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .kbd {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 5px;
+    padding: 2px 7px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<div class="kbd-hint">
+  <kbd class="kbd">←</kbd><kbd class="kbd">→</kbd> Navigate &nbsp;|&nbsp; <kbd class="kbd">F</kbd> Fullscreen
+</div>
+
+<div class="presentation" id="presentation">
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- SLIDE 1: TITLE                                     -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="slide title-slide active" id="s1">
+    <div class="logo">⚡</div>
+    <div class="slide-label" style="justify-content:center">Enterprise Financial Compliance Platform</div>
+    <h1 class="gradient-text">The Compliance Leader</h1>
+    <p class="subtitle" style="text-align:center; margin: 0 auto 32px;">
+      Cross-Border Regulatory Lineage · Translation Validation<br>
+      Document Intelligence · Real-Time Telemetry
+    </p>
+    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+      <span class="badge badge-cyan">ISO 20022</span>
+      <span class="badge badge-purple">SWIFT CBPR+</span>
+      <span class="badge badge-green">AI-Powered</span>
+      <span class="badge badge-amber">Real-Time</span>
+    </div>
+    <div class="slide-number">01 / 15</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- SLIDE 2: THE PROBLEM                              -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="slide" id="s2">
+    <div class="slide-label">The Problem</div>
+    <h2>The $40 Trillion Migration Challenge</h2>
+    <div class="two-col">
+      <div>
+        <p style="color:var(--muted); font-size:15px; line-height:1.7; margin-bottom:20px;">
+          The global banking industry is undergoing its largest messaging migration in 40 years.
+          SWIFT has mandated all cross-border payments switch from <strong style="color:var(--text)">MT format</strong> to
+          <strong style="color:var(--primary)">ISO 20022 MX format</strong> by November 2025.
+        </p>
+        <h3 style="margin-bottom:14px;">Pain Points</h3>
+        <ul class="check-list" style="--success: #FF6B6B">
+          <li style="--success:#FF6B6B">Manual translation is slow and error-prone</li>
+          <li style="--success:#FF6B6B">Compliance teams lack ISO 20022 expertise</li>
+          <li style="--success:#FF6B6B">Audit requirements demand tamper-proof logs</li>
+          <li style="--success:#FF6B6B">Training on new standards takes months</li>
+          <li style="--success:#FF6B6B">Different banks support different LLM providers</li>
+        </ul>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="accent-card" style="border-color:rgba(255,68,68,0.3); background:rgba(255,68,68,0.07);">
+          <div style="font-size:11px; font-weight:700; color:#FF6B6B; margin-bottom:8px;">COMPLIANCE DEADLINE</div>
+          <div style="font-size:28px; font-weight:900; color:var(--text);">Nov 2025</div>
+          <div style="font-size:13px; color:var(--muted); margin-top:4px;">SWIFT CBPR+ Mandatory Adoption</div>
+        </div>
+        <div class="accent-card">
+          <div style="font-size:11px; font-weight:700; color:var(--primary); margin-bottom:8px;">PAYMENT VOLUME AT STAKE</div>
+          <div style="font-size:28px; font-weight:900; color:var(--text);">$40T+</div>
+          <div style="font-size:13px; color:var(--muted); margin-top:4px;">Daily cross-border payment value</div>
+        </div>
+        <div class="accent-card purple">
+          <div style="font-size:11px; font-weight:700; color:#A855F7; margin-bottom:8px;">MESSAGES AFFECTED</div>
+          <div style="font-size:28px; font-weight:900; color:var(--text);">MT103, MT202<br><span style="font-size:16px;">MT202COV, MT204...</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">02 / 15</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- SLIDE 3: OUR SOLUTION                             -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="slide" id="s3">
+    <div class="slide-label">The Solution</div>
+    <h2>One Platform. Four Integrated Modules.</h2>
+    <div class="card-grid card-grid-2" style="flex:1; align-content:start; gap:14px; margin-top:8px;">
+      <div class="feature-card" style="border-color:rgba(0,212,255,0.2);">
+        <div class="icon">🔄</div>
+        <h3 style="color:var(--primary);">TX Engine</h3>
+        <p>Deterministic SWIFT MT → ISO 20022 MX translation with CBPR+ validation. Supports MT103, MT202, MT202COV, MT204, and payment returns.</p>
+      </div>
+      <div class="feature-card" style="border-color:rgba(123,47,190,0.25);">
+        <div class="icon">🤖</div>
+        <h3 style="color:#A855F7;">Knowledge</h3>
+        <p>AI-powered domain Q&A on ISO 20022, SWIFT, clearing and settlement. Switch between Gemini, Groq, OpenAI, and Ollama in real-time.</p>
+      </div>
+      <div class="feature-card" style="border-color:rgba(255,184,0,0.2);">
+        <div class="icon">📄</div>
+        <h3 style="color:var(--warning);">Documents</h3>
+        <p>RAG-powered document intelligence. Upload compliance PDFs and ask questions — answers grounded in your actual documents.</p>
+      </div>
+      <div class="feature-card" style="border-color:rgba(0,229,160,0.2);">
+        <div class="icon">🔐</div>
+        <h3 style="color:var(--success);">Audit & Telemetry</h3>
+        <p>Tamper-evident SHA-256 hash-chained audit log with PII masking + real-time WebSocket telemetry feed.</p>
+      </div>
+    </div>
+    <div class="slide-number">03 / 15</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- SLIDE 4: TECH STACK                               -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="slide" id="s4">
+    <div class="slide-label">Technology</div>
+    <h2>Modern, Production-Grade Stack</h2>
+    <div class="two-col" style="flex:1; gap:24px;">
+      <div>
+        <h3 style="color:var(--primary); margin-bottom:16px;">⚙ Backend</h3>
+        <table class="slide-table">
+          <tr><td><strong>FastAPI</strong></td><td style="color:var(--muted)">Async REST + WebSocket</td></tr>
+          <tr><td><strong>Python 3.13</strong></td><td style="color:var(--muted)">Async-first runtime</td></tr>
+          <tr><td><strong>Pydantic v2</strong></td><td style="color:var(--muted)">Type-safe validation</td></tr>
+          <tr><td><strong>httpx</strong></td><td style="color:var(--muted)">Zero-dep LLM REST calls</td></tr>
+          <tr><td><strong>aiofiles</strong></td><td style="color:var(--muted)">Non-blocking audit I/O</td></tr>
+          <tr><td><strong>ChromaDB</strong></td><td style="color:var(--muted)">Vector store (lazy-loaded)</td></tr>
+          <tr><td><strong>structlog</strong></td><td style="color:var(--muted)">Structured JSON logging</td></tr>
+        </table>
+      </div>
+      <div>
+        <h3 style="color:var(--purple); margin-bottom:16px;">🖥 Frontend</h3>
+        <table class="slide-table">
+          <tr><td><strong>Next.js 14</strong></td><td style="color:var(--muted)">App Router, React SSR</td></tr>
+          <tr><td><strong>TypeScript</strong></td><td style="color:var(--muted)">Full type safety</td></tr>
+          <tr><td><strong>Vanilla CSS</strong></td><td style="color:var(--muted)">Custom design system</td></tr>
+          <tr><td><strong>Lucide React</strong></td><td style="color:var(--muted)">SVG icon library</td></tr>
+          <tr><td><strong>React Portal</strong></td><td style="color:var(--muted)">Modal outside DOM tree</td></tr>
+          <tr><td><strong>WebSocket</strong></td><td style="color:var(--muted)">Native real-time events</td></tr>
+          <tr><td><strong>Inter + JB Mono</strong></td><td style="color:var(--muted)">Google Fonts</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="slide-number">04 / 15</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- SLIDE 5: ARCHITECTURE                             -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="slide" id="s5">
+    <div class="slide-label">Architecture</div>
+    <h2>Three-Layer Architecture</h2>
+    <div style="display:flex; flex-direction:column; gap:12px; flex:1; justify-content:center;">
+      <div class="card" style="border-color:rgba(0,212,255,0.2);">
+        <div style="font-size:11px; font-weight:700; color:var(--primary); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.08em;">Frontend — Next.js 14 (Port 3000)</div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <span class="badge badge-cyan">Dashboard</span>
+          <span class="badge badge-cyan">TX Engine</span>
+          <span class="badge badge-cyan">Knowledge</span>
+          <span class="badge badge-cyan">Documents</span>
+          <span class="badge badge-cyan">Audit</span>
+          <span class="badge badge-cyan">LLM Config Panel</span>
+        </div>
+      </div>
+      <div style="text-align:center; color:var(--muted); font-size:13px;">⬆ HTTP REST + WebSocket ⬇</div>
+      <div class="card" style="border-color:rgba(123,47,190,0.25);">
+        <div style="font-size:11px; font-weight:700; color:#A855F7; margin-bottom:10px; text-transform:uppercase; letter-spacing:0.08em;">Backend — FastAPI (Port 8000)</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;">
+          <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px;font-size:12px;text-align:center;">translate.py<br><span style="color:var(--muted); font-size:10px;">/translate, /validate</span></div>
+          <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px;font-size:12px;text-align:center;">learn.py<br><span style="color:var(--muted); font-size:10px;">/learn, /topics</span></div>
+          <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px;font-size:12px;text-align:center;">documents.py<br><span style="color:var(--muted); font-size:10px;">/upload, /query</span></div>
+          <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px;font-size:12px;text-align:center;">audit.py<br><span style="color:var(--muted); font-size:10px;">/logs, /export, WS</span></div>
+          <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px;font-size:12px;text-align:center;">llm_config.py<br><span style="color:var(--muted); font-size:10px;">/llm-config</span></div>
+          <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px;font-size:12px;text-align:center;">ws_router<br><span style="color:var(--muted); font-size:10px;">/ws/telemetry</span></div>
+        </div>
+      </div>
+      <div style="text-align:center; color:var(--muted); font-size:13px;">⬆ Service Layer ⬇</div>
+      <div class="card" style="border-color:rgba(0,229,160,0.2);">
+        <div style="font-size:11px; font-weight:700; color:var(--success); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.08em;">Services + External</div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <span class="badge badge-green">mt_parser</span>
+          <span class="badge badge-green">mx_translator</span>
+          <span class="badge badge-green">validator</span>
+          <span class="badge badge-green">llm_router</span>
+          <span class="badge badge-green">rag_pipeline</span>
+          <span class="badge badge-green">audit_logger</span>
+          <span class="badge badge-green">telemetry_bus</span>
+          <span class="badge badge-green">llm_config_store</span>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">05 / 15</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- SLIDE 6: TRANSLATION ENGINE                       -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="slide" id="s6">
+    <div class="slide-label">Module 1</div>
+    <h2>TX Engine — Deterministic Translation</h2>
+    <div class="two-col" style="flex:1; gap:28px; align-items:start;">
+      <div>
+        <h3 style="margin-bottom:14px;">Processing Pipeline</h3>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div class="flow-step" style="border-color:rgba(0,212,255,0.3); color:var(--primary);">① MTParser — Block & field extraction</div>
+          <div style="text-align:center; color:var(--muted);">↓</div>
+          <div class="flow-step" style="border-color:rgba(123,47,190,0.3); color:#A855F7;">② MXTranslator — ISO 20022 XML builder</div>
+          <div style="text-align:center; color:var(--muted);">↓</div>
+          <div class="flow-step" style="border-color:rgba(0,229,160,0.3); color:var(--success);">③ Validator — XSD + CBPR+ rules</div>
+          <div style="text-align:center; color:var(--muted);">↓</div>
+          <div class="flow-step" style="border-color:rgba(255,184,0,0.3); color:var(--warning);">④ AuditLogger + TelemetryBus</div>
+        </div>
+      </div>
+      <div>
+        <h3 style="margin-bottom:14px;">MT → MX Mapping</h3>
+        <table class="slide-table">
+          <tr><th>Source</th><th>Target</th></tr>
+          <tr><td><strong>MT103</strong></td><td style="color:var(--primary)">pacs.008.001.08</td></tr>
+          <tr><td><strong>MT202</strong></td><td style="color:var(--primary)">pacs.009 CORE</td></tr>
+          <tr><td><strong>MT202COV</strong></td><td style="color:var(--primary)">pacs.009 COV</td></tr>
+          <tr><td><strong>MT204</strong></td><td style="color:var(--primary)">pacs.009 ADV</td></tr>
+          <tr><td><strong>MT103RETURN</strong></td><td style="color:var(--primary)">pacs.004.001.09</td></tr>
+        </table>
+        <div class="accent-card" style="margin-top:14px;">
+          <div style="font-size:12px; font-weight:700; color:var(--primary); margin-bottom:6px;">CBPR+ GUARD</div>
+          <div style="font-size:12px; color:var(--muted);">ValidationException raised if a mutation would violate ISO schema rules — HTTP 422 with remediation action</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">06 / 15</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- SLIDE 7: AI KNOWLEDGE                             -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="slide" id="s7">
+    <div class="slide-label">Module 2</div>
+    <h2>Knowledge — Multi-Provider AI Assistant</h2>
+    <div class="two-col" style="flex:1; gap:28px; align-items:start;">
+      <div>
+        <h3 style="margin-bottom:14px;">Supported Providers</h3>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div class="accent-card" style="display:flex; align-items:center; gap:12px; padding:14px 16px;">
+            <div style="font-size:20px;">✦</div>
+            <div>
+              <div style="font-weight:700; color:var(--primary);">Google Gemini</div>
+              <div style="font-size:12px; color:var(--muted);">gemini-2.0-flash, 1.5-pro, 1.5-flash</div>
+            </div>
+          </div>
+          <div class="accent-card" style="border-color:rgba(245,80,54,0.3); background:rgba(245,80,54,0.07); display:flex; align-items:center; gap:12px; padding:14px 16px;">
+            <div style="font-size:20px;">⚡</div>
+            <div>
+              <div style="font-weight:700; color:#F55036;">Groq</div>
+              <div style="font-size:12px; color:var(--muted);">llama-3.3-70b, mixtral-8x7b, gemma2-9b</div>
+            </div>
+          </div>
+          <div class="accent-card green" style="display:flex; align-items:center; gap:12px; padding:14px 16px;">
+            <div style="font-size:20px;">◆</div>
+            <div>
+              <div style="font-weight:700; color:var(--success);">OpenAI</div>
+              <div style="font-size:12px; color:var(--muted);">gpt-4o, gpt-4o-mini, gpt-4-turbo</div>
+            </div>
+          </div>
+          <div class="accent-card amber" style="display:flex; align-items:center; gap:12px; padding:14px 16px;">
+            <div style="font-size:20px;">◉</div>
+            <div>
+              <div style="font-weight:700; color:var(--warning);">Ollama (Local)</div>
+              <div style="font-size:12px; color:var(--muted);">llama3, mistral, codellama — runs on-premise</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3 style="margin-bottom:14px;">Key Features</h3>
+        <ul class="check-list">
+          <li>Hot-swap provider/model/key without server restart</li>
+          <li>Financial domain system prompt (zero-fluff, exact XML paths)</li>
+          <li>3-attempt retry with exponential backoff (1s→2s→4s)</li>
+          <li>Informative fallback when API key missing</li>
+          <li>Graceful error messages with actionable hints</li>
+          <li>History of last 25 configuration changes</li>
+          <li>Test Connection endpoint to verify key before use</li>
+        </ul>
+        <div class="code-block" style="margin-top:16px; font-size:11px;">
+          POST /api/v1/llm-config<br>
+          {"provider": "groq",<br>
+          &nbsp;"model": "llama-3.3-70b-versatile",<br>
+          &nbsp;"api_key": "gsk_..."}<br>
+          <br>
+          → Immediate effect, no restart needed
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">07 / 15</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- SLIDE 8: RAG DOCUMENTS                            -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="slide" id="s8">
+    <div class="slide-label">Module 3</div>
+    <h2>Documents — RAG-Powered Intelligence</h2>
+    <div class="two-col" style="flex:1; gap:28px; align-items:start;">
+      <div>
+        <h3 style="margin-bottom:14px;">Ingestion Pipeline</h3>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div class="flow-step">📄 PDF Upload (multipart/form-data)</div>
+          <div style="text-align:center; color:var(--muted); font-size:12px;">↓ Text extraction</div>
+          <div class="flow-step">✂ Chunking (512 tokens, 64 overlap)</div>
+          <div style="text-align:center; color:var(--muted); font-size:12px;">↓ sentence-transformers</div>
+          <div class="flow-step">🔢 Embeddings (all-MiniLM-L6-v2, 384-dim)</div>
+          <div style="text-align:center; color:var(--muted); font-size:12px;">↓ HNSW index</div>
+          <div class="flow-step">💾 ChromaDB Vector Store (persistent)</div>
+        </div>
+      </div>
+      <div>
+        <h3 style="margin-bottom:14px;">Query & Retrieval</h3>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div class="flow-step" style="border-color:rgba(123,47,190,0.3); color:#A855F7;">❓ User Question</div>
+          <div style="text-align:center; color:var(--muted); font-size:12px;">↓ query embedding</div>
+          <div class="flow-step" style="border-color:rgba(123,47,190,0.3); color:#A855F7;">🔍 Similarity Search (top-k chunks)</div>
+          <div style="text-align:center; color:var(--muted); font-size:12px;">↓ context prepended</div>
+          <div class="flow-step" style="border-color:rgba(0,229,160,0.3); color:var(--success);">🤖 LLM → Grounded Answer + Citations</div>
+        </div>
+        <div class="accent-card green" style="margin-top:16px;">
+          <div style="font-size:12px; font-weight:700; color:var(--success); margin-bottom:6px;">ANTI-HALLUCINATION</div>
+          <div style="font-size:12px; color:var(--muted);">Answers are grounded in your uploaded documents — cites specific source files and pages</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">08 / 15</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- SLIDE 9: AUDIT & SECURITY                         -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="slide" id="s9">
+    <div class="slide-label">Module 4</div>
+    <h2>Audit — Tamper-Evident Hash Chain</h2>
+    <div class="two-col" style="flex:1; gap:28px; align-items:start;">
+      <div>
+        <h3 style="margin-bottom:14px;">Hash Chain Algorithm</h3>
+        <div class="code-block">
+genesis = SHA256("")<br>
+<br>
+entry_1.hash = SHA256(<br>
+&nbsp;&nbsp;SHA256(prev_hash)<br>
+&nbsp;&nbsp;+ SHA256(entry_json)<br>
+)<br>
+<br>
+# Tamper any entry →<br>
+# all subsequent hashes invalid<br>
+# → tamper immediately detectable
+        </div>
+        <div style="margin-top:16px; display:flex; flex-direction:column; gap:8px;">
+          <div class="flow-step" style="font-size:12px;">Entry 1 → hash_1 = "abc123..."</div>
+          <div class="flow-step" style="font-size:12px;">Entry 2 + hash_1 → hash_2 = "def456..."</div>
+          <div class="flow-step" style="font-size:12px;">Entry 3 + hash_2 → hash_3 = "ghi789..."</div>
+        </div>
+      </div>
+      <div>
+        <h3 style="margin-bottom:14px;">Security Controls</h3>
+        <ul class="check-list">
+          <li>IBAN masking via regex before any write</li>
+          <li>Account number masking (8+ digits → [MASKED])</li>
+          <li>API keys shown as preview only (first 8 + last 4)</li>
+          <li>Daily NDJSON rotation for easy auditing</li>
+          <li>Async lock prevents concurrent write corruption</li>
+          <li>Global error handler — no stack traces to clients</li>
+          <li>CORS restricted to frontend origin only</li>
+        </ul>
+        <div class="accent-card" style="margin-top:16px;">
+          <div style="font-size:12px; font-weight:700; color:var(--primary); margin-bottom:6px;">EXPORT FORMAT</div>
+          <div style="font-size:12px; color:var(--muted);">GET /api/v1/audit/export → Full NDJSON bundle download for regulatory reporting</div>
+        </div>
+        <div class="accent-card green" style="margin-top:10px;">
+          <div style="font-size:12px; font-weight:700; color:var(--success); margin-bottom:6px;">REAL-TIME TELEMETRY</div>
+          <div style="font-size:12px; color:var(--muted);">WebSocket /ws/telemetry → Live event stream to all connected browser tabs</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">09 / 15</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- SLIDE 10: KEY DESIGN DECISIONS                    -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="slide" id="s10">
+    <div class="slide-label">Engineering Excellence</div>
+    <h2>Key Design Decisions</h2>
+    <div class="card-grid card-grid-2" style="flex:1; align-content:start; gap:14px;">
+      <div class="feature-card">
+        <h3>🚀 Zero-Dep AI Calls</h3>
+        <p>All LLM providers called via pure <strong>httpx REST</strong>. No grpcio, no google-generativeai SDK. Eliminates Windows C++ compilation failures.</p>
+      </div>
+      <div class="feature-card">
+        <h3>⚡ Async-First</h3>
+        <p><strong>async/await</strong> throughout — aiofiles, httpx.AsyncClient, asyncio.Lock. Single uvicorn worker handles hundreds of concurrent LLM calls.</p>
+      </div>
+      <div class="feature-card">
+        <h3>🦥 Lazy Loading</h3>
+        <p>ChromaDB + sentence-transformers imported only on first document operation. Server starts in ~2 seconds even without ML packages installed.</p>
+      </div>
+      <div class="feature-card">
+        <h3>🔌 React Portal</h3>
+        <p>LLMConfigPanel uses <strong>createPortal()</strong> to render at document.body level — escapes sidebar's stacking context for true full-viewport modal.</p>
+      </div>
+      <div class="feature-card">
+        <h3>📦 Built-in dotenv</h3>
+        <p>Custom <strong>_load_dotenv()</strong> pre-loads .env into os.environ before pydantic-settings — bypasses Windows path resolution issues.</p>
+      </div>
+      <div class="feature-card">
+        <h3>♻️ Hot-Swap Config</h3>
+        <p>llm_config_store singleton — update provider/model/key via REST API. llm_router always reads live state. No restart needed.</p>
+      </div>
+    </div>
+    <div class="slide-number">10 / 15</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- SLIDE 11: API REFERENCE                           -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="slide" id="s11">
+    <div class="slide-label">API Reference</div>
+    <h2>17 Endpoints + WebSocket</h2>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; flex:1; align-content:start;">
+      <div class="card">
+        <div style="font-size:11px; font-weight:700; color:var(--primary); margin-bottom:10px;">TX ENGINE</div>
+        <div style="font-size:12px; color:var(--muted); line-height:2;">
+          <span style="color:var(--success);">POST</span> /api/v1/<strong style="color:var(--text)">translate</strong><br>
+          <span style="color:var(--success);">POST</span> /api/v1/<strong style="color:var(--text)">validate</strong><br>
+          <span style="color:var(--warning);">GET</span> /api/v1/<strong style="color:var(--text)">translate/sample/{type}</strong>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:11px; font-weight:700; color:#A855F7; margin-bottom:10px;">KNOWLEDGE</div>
+        <div style="font-size:12px; color:var(--muted); line-height:2;">
+          <span style="color:var(--success);">POST</span> /api/v1/<strong style="color:var(--text)">learn</strong><br>
+          <span style="color:var(--warning);">GET</span> /api/v1/<strong style="color:var(--text)">learn/topics</strong>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:11px; font-weight:700; color:var(--warning); margin-bottom:10px;">DOCUMENTS</div>
+        <div style="font-size:12px; color:var(--muted); line-height:2;">
+          <span style="color:var(--success);">POST</span> /api/v1/<strong style="color:var(--text)">documents/upload</strong><br>
+          <span style="color:var(--success);">POST</span> /api/v1/<strong style="color:var(--text)">documents/query</strong><br>
+          <span style="color:var(--warning);">GET</span> /api/v1/<strong style="color:var(--text)">documents</strong>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:11px; font-weight:700; color:var(--success); margin-bottom:10px;">AUDIT + LLM CONFIG</div>
+        <div style="font-size:12px; color:var(--muted); line-height:2;">
+          <span style="color:var(--warning);">GET</span> /api/v1/<strong style="color:var(--text)">audit/logs</strong><br>
+          <span style="color:var(--warning);">GET</span> /api/v1/<strong style="color:var(--text)">audit/export</strong><br>
+          <span style="color:var(--warning);">WS</span> /api/v1/<strong style="color:var(--text)">ws/telemetry</strong><br>
+          <span style="color:var(--warning);">GET/POST</span> /api/v1/<strong style="color:var(--text)">llm-config</strong><br>
+          <span style="color:var(--warning);">GET</span> /api/v1/<strong style="color:var(--text)">llm-config/history</strong>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12px; color:var(--muted); margin-top:12px;">📖 Interactive docs: <strong style="color:var(--primary);">localhost:8000/api/docs</strong> (Swagger UI)</p>
+    <div class="slide-number">11 / 15</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- SLIDE 12: DATA FLOW                               -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="slide" id="s12">
+    <div class="slide-label">Data Flow</div>
+    <h2>End-to-End MT103 Translation Flow</h2>
+    <div style="display:flex; flex-direction:column; gap:12px; flex:1; justify-content:center;">
+      <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:center;">
+        <div class="arch-box" style="border-color:rgba(0,212,255,0.3); min-width:120px;">
+          <div style="color:var(--muted); font-size:10px;">User</div>
+          <div style="font-size:13px; font-weight:700; color:var(--primary);">POST /translate<br>{mt_raw, "MT103"}</div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="arch-box" style="border-color:rgba(123,47,190,0.3); min-width:130px;">
+          <div style="color:var(--muted); font-size:10px;">Service</div>
+          <div style="font-size:13px; font-weight:700; color:#A855F7;">MTParser<br>Block + field extraction<br>UETR from {121:}</div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="arch-box" style="border-color:rgba(255,184,0,0.3); min-width:130px;">
+          <div style="color:var(--muted); font-size:10px;">Service</div>
+          <div style="font-size:13px; font-weight:700; color:var(--warning);">MXTranslator<br>pacs.008.001.08<br>XML generation</div>
+        </div>
+      </div>
+      <div style="display:flex; justify-content:flex-end; padding-right:60px;">
+        <span class="flow-arrow" style="transform:rotate(90deg);">→</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:center; flex-direction:row-reverse;">
+        <div class="arch-box" style="border-color:rgba(0,212,255,0.3); min-width:120px;">
+          <div style="color:var(--muted); font-size:10px;">Response</div>
+          <div style="font-size:13px; font-weight:700; color:var(--primary);">TranslationResponse<br>{xml, uetr, audit_id,<br>validation_errors}</div>
+        </div>
+        <span class="flow-arrow">←</span>
+        <div class="arch-box" style="border-color:rgba(0,229,160,0.3); min-width:130px;">
+          <div style="color:var(--muted); font-size:10px;">Broadcast</div>
+          <div style="font-size:13px; font-weight:700; color:var(--success);">AuditLogger<br>Hash chain + PII mask<br>+ TelemetryBus WS push</div>
+        </div>
+        <span class="flow-arrow">←</span>
+        <div class="arch-box" style="border-color:rgba(0,229,160,0.3); min-width:130px;">
+          <div style="color:var(--muted); font-size:10px;">Service</div>
+          <div style="font-size:13px; font-weight:700; color:var(--success);">Validator<br>XSD + CBPR+ rules<br>(is_valid, [errors])</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">12 / 15</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- SLIDE 13: METRICS & PERFORMANCE                   -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="slide" id="s13">
+    <div class="slide-label">Performance</div>
+    <h2>Key Metrics & SLAs</h2>
+    <div class="stat-boxes" style="margin-bottom:24px;">
+      <div class="stat-box">
+        <div class="num">&lt;200ms</div>
+        <div class="label">Translation P95</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">&lt;10s</div>
+        <div class="label">LLM Response P90</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">99.5%</div>
+        <div class="label">Availability SLA</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">25</div>
+        <div class="label">Config History Slots</div>
+      </div>
+    </div>
+    <div class="two-col" style="gap:20px;">
+      <div>
+        <h3 style="margin-bottom:12px;">Non-Functional Requirements</h3>
+        <ul class="check-list">
+          <li>Fully async — no blocking I/O in hot path</li>
+          <li>3-attempt retry with exponential backoff</li>
+          <li>60s timeout per LLM call</li>
+          <li>Graceful fallback on LLM failure</li>
+          <li>aiofiles for non-blocking audit writes</li>
+          <li>asyncio.Lock — race-condition-free log writes</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="margin-bottom:12px;">Scalability Path</h3>
+        <ul class="check-list">
+          <li>Stateless API → horizontal scale with load balancer</li>
+          <li>Replace NDJSON with WORM S3 for production</li>
+          <li>Replace embedded ChromaDB with Pinecone/Weaviate</li>
+          <li>gunicorn + UvicornWorker for multi-process</li>
+          <li>JWT auth layer already scaffolded in config</li>
+          <li>nginx reverse proxy for HTTPS + SSL termination</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-number">13 / 15</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- SLIDE 14: CHALLENGES & SOLUTIONS                  -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="slide" id="s14">
+    <div class="slide-label">Engineering Journey</div>
+    <h2>Challenges & How We Solved Them</h2>
+    <div style="display:flex; flex-direction:column; gap:12px; flex:1; justify-content:center;">
+      <div class="card" style="display:grid; grid-template-columns:1fr 2fr; gap:16px; align-items:center;">
+        <div>
+          <div class="badge badge-amber" style="margin-bottom:8px;">Challenge</div>
+          <div style="font-size:13px; font-weight:700;">Windows C++ Build Failure</div>
+          <div style="font-size:12px; color:var(--muted); margin-top:4px;">chroma-hnswlib required MSVC 14.0+</div>
+        </div>
+        <div>
+          <div class="badge badge-green" style="margin-bottom:8px;">Solution</div>
+          <div style="font-size:12px; color:var(--muted);">Split requirements (core + ml), <strong style="color:var(--text)">--prefer-binary</strong> flag, lazy-import ChromaDB, replace google-generativeai with pure httpx REST</div>
+        </div>
+      </div>
+      <div class="card" style="display:grid; grid-template-columns:1fr 2fr; gap:16px; align-items:center;">
+        <div>
+          <div class="badge badge-amber" style="margin-bottom:8px;">Challenge</div>
+          <div style="font-size:13px; font-weight:700;">MOCK MODE Despite Valid Key</div>
+          <div style="font-size:12px; color:var(--muted); margin-top:4px;">pydantic-settings Windows path issue</div>
+        </div>
+        <div>
+          <div class="badge badge-green" style="margin-bottom:8px;">Solution</div>
+          <div style="font-size:12px; color:var(--muted);">Built custom <strong style="color:var(--text)">_load_dotenv()</strong> to pre-load .env into os.environ before pydantic-settings reads it + startup diagnostic logs</div>
+        </div>
+      </div>
+      <div class="card" style="display:grid; grid-template-columns:1fr 2fr; gap:16px; align-items:center;">
+        <div>
+          <div class="badge badge-amber" style="margin-bottom:8px;">Challenge</div>
+          <div style="font-size:13px; font-weight:700;">Modal Clipped to Sidebar</div>
+          <div style="font-size:12px; color:var(--muted); margin-top:4px;">CSS stacking context constraint</div>
+        </div>
+        <div>
+          <div class="badge badge-green" style="margin-bottom:8px;">Solution</div>
+          <div style="font-size:12px; color:var(--muted);"><strong style="color:var(--text);">React createPortal()</strong> renders modal at document.body — escapes sidebar DOM completely, true full-viewport centering</div>
+        </div>
+      </div>
+      <div class="card" style="display:grid; grid-template-columns:1fr 2fr; gap:16px; align-items:center;">
+        <div>
+          <div class="badge badge-amber" style="margin-bottom:8px;">Challenge</div>
+          <div style="font-size:13px; font-weight:700;">Quota Exhaustion (429)</div>
+          <div style="font-size:12px; color:var(--muted); margin-top:4px;">Gemini free tier rate limits</div>
+        </div>
+        <div>
+          <div class="badge badge-green" style="margin-bottom:8px;">Solution</div>
+          <div style="font-size:12px; color:var(--muted);">Dynamic LLM Config system — switch to Groq/OpenAI/Ollama via <strong style="color:var(--text)">5-click UI</strong> in real-time, no server restart, history tracked</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">14 / 15</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ -->
+  <!-- SLIDE 15: CLOSING                                 -->
+  <!-- ══════════════════════════════════════════════════ -->
+  <div class="slide title-slide" id="s15">
+    <div class="logo">⚡</div>
+    <div class="slide-label" style="justify-content:center;">Summary</div>
+    <h1 style="font-size:44px;" class="gradient-text">The Compliance Leader</h1>
+    <div class="stat-boxes" style="margin: 24px auto; max-width:700px;">
+      <div class="stat-box">
+        <div class="num">4</div>
+        <div class="label">Core Modules</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">17</div>
+        <div class="label">API Endpoints</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">4</div>
+        <div class="label">LLM Providers</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">7</div>
+        <div class="label">MT Types Supported</div>
+      </div>
+    </div>
+    <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:24px;">
+      <span class="badge badge-cyan">FastAPI + Python 3.13</span>
+      <span class="badge badge-purple">Next.js 14 + TypeScript</span>
+      <span class="badge badge-green">SHA-256 Hash Chain</span>
+      <span class="badge badge-amber">Real-Time WebSocket</span>
+    </div>
+    <p class="subtitle" style="text-align:center; margin: 0 auto;">
+      Production-ready · Async-first · Zero external SDK dependency · Hot-swappable AI
+    </p>
+    <div style="margin-top:32px; color:var(--muted); font-size:13px;">
+      📖 Documentation: <strong style="color:var(--primary);">d:\WirePaymentAssistance\documentation\</strong>
+    </div>
+    <div class="slide-number">15 / 15</div>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button onclick="prevSlide()" title="Previous">‹</button>
+  <span class="slide-counter" id="counter">1 / 15</span>
+  <button onclick="nextSlide()" title="Next">›</button>
+  <button onclick="toggleFullscreen()" title="Fullscreen" style="font-size:14px;">⛶</button>
+</div>
+
+<script>
+  const TOTAL = 15;
+  let current = 1;
+
+  function showSlide(n) {
+    document.querySelectorAll('.slide').forEach((s, i) => {
+      s.classList.toggle('active', i === n - 1);
+    });
+    document.getElementById('counter').textContent = `${n} / ${TOTAL}`;
+    document.getElementById('progress').style.width = `${(n / TOTAL) * 100}%`;
+    current = n;
+  }
+
+  function nextSlide() {
+    if (current < TOTAL) showSlide(current + 1);
+  }
+
+  function prevSlide() {
+    if (current > 1) showSlide(current - 1);
+  }
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    if (e.key === 'f' || e.key === 'F') toggleFullscreen();
+    if (e.key === 'Home') showSlide(1);
+    if (e.key === 'End') showSlide(TOTAL);
+  });
+
+  // Touch/swipe support
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) { diff > 0 ? nextSlide() : prevSlide(); }
+  });
+
+  showSlide(1);
+</script>
+
+</body>
+</html>

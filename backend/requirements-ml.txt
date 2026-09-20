@@ -1,0 +1,23 @@
+# ============================================================
+# ML/RAG requirements — install AFTER requirements-core.txt
+# These packages need pre-built wheels; use --prefer-binary.
+#
+# INSTALL:
+#   pip install --prefer-binary -r requirements-ml.txt
+# ============================================================
+
+# Vector store (>=0.6.0 has Python 3.13 Windows pre-built wheels)
+chromadb>=0.6.0
+
+# Embeddings (torch 2.6+ officially supports Python 3.13)
+torch>=2.6.0
+sentence-transformers>=3.3.1
+
+# LangChain (for future extended RAG pipelines)
+langchain>=0.3.12
+langchain-google-genai>=2.0.7
+langchain-openai>=0.2.12
+langchain-community>=0.3.12
+
+# Numpy (1.26+ has Python 3.13 wheels)
+numpy>=1.26.0

@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Compliance Leader — User Manual &amp; Presentation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  :root{--bg:#080C14;--bg2:#0D1420;--panel:#111827;--border:rgba(255,255,255,0.08);--primary:#00D4FF;--success:#00E5A0;--warning:#FFB800;--danger:#FF4D6D;--purple:#7B2FBE;--text:#F0F4FF;--text2:#8B9DC3;--text3:#4A5A7A;--accent:rgba(0,212,255,0.12)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow:hidden;height:100vh;width:100vw}
+  .presentation{width:100vw;height:100vh;position:relative}
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;overflow-y:auto;background:var(--bg)}
+  .slide.active{display:flex}
+  .slide-inner{max-width:1100px;width:100%;margin:0 auto;padding:40px 48px 120px;flex:1}
+  .nav-bar{position:fixed;bottom:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:14px 32px;background:rgba(8,12,20,0.95);backdrop-filter:blur(12px);border-top:1px solid var(--border)}
+  .nav-btn{padding:9px 22px;border-radius:8px;border:1px solid var(--border);background:var(--panel);color:var(--text);cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;transition:all 0.15s}
+  .nav-btn:hover{background:var(--accent);border-color:var(--primary);color:var(--primary)}
+  .nav-btn.pb{background:var(--primary);color:#080C14;border-color:var(--primary)}
+  .nav-btn.pb:hover{opacity:0.9}
+  .nav-btn:disabled{opacity:0.3;cursor:not-allowed}
+  .slide-counter{font-size:13px;color:var(--text2);min-width:90px;text-align:center}
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--success));transition:width 0.3s ease;z-index:1001}
+  .toc-nav{position:fixed;top:0;right:0;z-index:999;padding:10px}
+  .toc-toggle{padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:rgba(8,12,20,0.9);color:var(--text2);cursor:pointer;font-size:12px;font-family:'Inter',sans-serif}
+  .toc-panel{display:none;position:fixed;top:42px;right:10px;width:260px;max-height:80vh;overflow-y:auto;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px;z-index:1002}
+  .toc-panel.open{display:block}
+  .toc-item{padding:7px 12px;border-radius:6px;cursor:pointer;font-size:12px;color:var(--text2);display:flex;align-items:center;gap:8px;transition:all 0.15s}
+  .toc-item:hover,.toc-item.cur{background:var(--accent);color:var(--primary)}
+  .toc-num{font-size:10px;color:var(--text3);min-width:20px}
+  .slide-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px}
+  .tb{background:rgba(0,212,255,0.12);color:var(--primary);border:1px solid rgba(0,212,255,0.25)}
+  .tg{background:rgba(0,229,160,0.12);color:var(--success);border:1px solid rgba(0,229,160,0.25)}
+  .ty{background:rgba(255,184,0,0.12);color:var(--warning);border:1px solid rgba(255,184,0,0.25)}
+  .tp{background:rgba(123,47,190,0.15);color:#A855F7;border:1px solid rgba(123,47,190,0.3)}
+  .tr{background:rgba(255,77,109,0.12);color:var(--danger);border:1px solid rgba(255,77,109,0.25)}
+  h1.hero{font-size:52px;font-weight:900;line-height:1.1;letter-spacing:-0.03em;margin-bottom:16px}
+  h1.st{font-size:34px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px}
+  h2.sh{font-size:22px;font-weight:700;margin-bottom:12px;margin-top:32px}
+  h3.sbh{font-size:15px;font-weight:700;margin-bottom:8px}
+  p.lead{font-size:17px;color:var(--text2);line-height:1.65;margin-bottom:20px}
+  p.body{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:12px}
+  .gt{background:linear-gradient(135deg,#00D4FF 0%,#00E5A0 50%,#7B2FBE 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:16px}
+  .cg{display:grid;gap:14px}
+  .g2{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:1fr 1fr 1fr}
+  .g4{grid-template-columns:1fr 1fr 1fr 1fr}
+  .ib{padding:14px 18px;border-radius:10px;border-left:3px solid;margin-bottom:14px;font-size:13px;line-height:1.6}
+  .ibb{background:rgba(0,212,255,0.07);border-color:var(--primary);color:#b0e8ff}
+  .ibg{background:rgba(0,229,160,0.07);border-color:var(--success);color:#a0f5d8}
+  .iby{background:rgba(255,184,0,0.07);border-color:var(--warning);color:#ffe5a0}
+  .ibr{background:rgba(255,77,109,0.07);border-color:var(--danger);color:#ffb0c0}
+  ol.sl{list-style:none;counter-reset:steps}
+  ol.sl li{counter-increment:steps;display:flex;align-items:flex-start;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);font-size:14px;line-height:1.6;color:var(--text2)}
+  ol.sl li:last-child{border-bottom:none}
+  ol.sl li::before{content:counter(steps);min-width:26px;height:26px;border-radius:50%;background:var(--accent);border:1px solid rgba(0,212,255,0.3);color:var(--primary);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  ul.bl{list-style:none}
+  ul.bl li{padding:6px 0;font-size:14px;color:var(--text2);display:flex;align-items:flex-start;gap:10px;line-height:1.55}
+  ul.bl li::before{content:'→';color:var(--primary);font-weight:700;flex-shrink:0;margin-top:1px}
+  .cb{background:#060A10;border:1px solid rgba(0,212,255,0.15);border-radius:10px;padding:16px 20px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;color:#a8d8ff;overflow-x:auto;margin:12px 0;position:relative}
+  .cb .kw{color:#ff79c6}.cb .str{color:#f1fa8c}.cb .tag{color:#50fa7b}.cb .attr{color:#8be9fd}.cb .val{color:#ffb86c}.cb .cm{color:#6272a4}
+  .sb{display:flex;border-radius:12px;overflow:hidden;margin:16px 0;border:1px solid var(--border)}
+  .sb-bar{background:#0D1420;padding:10px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+  .sd{width:10px;height:10px;border-radius:50%}
+  .su{flex:1;background:rgba(255,255,255,0.05);border-radius:6px;padding:4px 12px;font-size:12px;color:var(--text2);font-family:'JetBrains Mono',monospace}
+  .ss{background:#0A0F1A;padding:24px;min-height:200px;flex:1}
+  .sfg{margin-bottom:14px}
+  .sl2{font-size:12px;color:var(--text2);margin-bottom:5px;display:block;font-weight:600}
+  .si{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:7px;padding:10px 14px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif}
+  .sbt{padding:10px 20px;border-radius:8px;border:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+  .sbtp{background:var(--primary);color:#080C14}
+  .sbtg{background:var(--success);color:#080C14}
+  .tog{display:inline-flex;align-items:center;gap:10px;padding:10px 18px;border-radius:10px;border:1px solid var(--border);background:var(--panel);font-size:13px;font-weight:600;color:var(--text2)}
+  .tog.on{border-color:rgba(0,212,255,0.4);background:rgba(0,212,255,0.08);color:var(--primary)}
+  .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700}
+  .bp{background:rgba(0,229,160,0.15);color:var(--success);border:1px solid rgba(0,229,160,0.3)}
+  .bw{background:rgba(255,184,0,0.15);color:var(--warning);border:1px solid rgba(255,184,0,0.3)}
+  .be{background:rgba(255,77,109,0.15);color:var(--danger);border:1px solid rgba(255,77,109,0.3)}
+  .dt{width:100%;border-collapse:collapse;font-size:13px}
+  .dt th{text-align:left;padding:10px 14px;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text3);border-bottom:1px solid var(--border)}
+  .dt td{padding:11px 14px;color:var(--text2);border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:top;line-height:1.5}
+  .dt tr:hover td{background:rgba(255,255,255,0.02)}
+  .mono{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--primary)}
+  .co{display:flex;gap:14px;padding:16px 18px;border-radius:10px;margin:14px 0;align-items:flex-start}
+  .co-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+  .co-body{font-size:13px;line-height:1.65}
+  .co-title{font-weight:700;margin-bottom:4px;font-size:14px}
+  .cob{background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.15)}
+  .cog{background:rgba(0,229,160,0.06);border:1px solid rgba(0,229,160,0.15)}
+  .coy{background:rgba(255,184,0,0.06);border:1px solid rgba(255,184,0,0.15)}
+  .cor{background:rgba(255,77,109,0.06);border:1px solid rgba(255,77,109,0.15)}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .cover{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:100vh;padding:60px 40px;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(0,212,255,0.06) 0%,transparent 70%),radial-gradient(ellipse 60% 50% at 80% 80%,rgba(123,47,190,0.06) 0%,transparent 60%),var(--bg)}
+  .logo{width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,#00D4FF,#00E5A0);display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 28px;box-shadow:0 0 40px rgba(0,212,255,0.25)}
+  .mc{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px;display:flex;align-items:flex-start;gap:14px}
+  .mi{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .mn{font-size:14px;font-weight:700;margin-bottom:3px}
+  .md{font-size:12px;color:var(--text2);line-height:1.4}
+  .orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+  .o1{width:500px;height:500px;background:rgba(0,212,255,0.04);top:-150px;right:-150px}
+  .o2{width:400px;height:400px;background:rgba(123,47,190,0.04);bottom:-100px;left:-100px}
+  @media(max-width:768px){.slide-inner{padding:24px 20px 100px}h1.hero{font-size:32px}h1.st{font-size:24px}.g2,.g3,.g4,.split{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="orb o1"></div><div class="orb o2"></div>
+<div class="progress-bar" id="pb"></div>
+<div class="toc-nav"><button class="toc-toggle" onclick="toggleTOC()">☰ Sections</button><div class="toc-panel" id="toc"></div></div>
+<div class="presentation" id="pres">
+
+<!-- SLIDE 1: COVER -->
+<div class="slide active" data-title="Cover">
+<div class="slide-inner"><div class="cover">
+  <div class="logo">⚡</div>
+  <div class="slide-tag tb">ISO 20022 Enterprise Platform</div>
+  <h1 class="hero gt">The Compliance Leader</h1>
+  <p class="lead" style="max-width:600px;margin:0 auto 36px">Complete User Manual &amp; Operational Guide — every feature, setting, and workflow from registration to administration.</p>
+  <div class="cg g4" style="max-width:800px;margin:0 auto;text-align:left">
+    <div style="background:rgba(0,212,255,0.07);border:1px solid rgba(0,212,255,0.2);border-radius:10px;padding:16px;text-align:center"><div style="font-size:28px;font-weight:900;color:var(--primary)">8</div><div style="font-size:12px;color:var(--text2);margin-top:4px">Modules</div></div>
+    <div style="background:rgba(0,229,160,0.07);border:1px solid rgba(0,229,160,0.2);border-radius:10px;padding:16px;text-align:center"><div style="font-size:28px;font-weight:900;color:var(--success)">10</div><div style="font-size:12px;color:var(--text2);margin-top:4px">MT Types</div></div>
+    <div style="background:rgba(255,184,0,0.07);border:1px solid rgba(255,184,0,0.2);border-radius:10px;padding:16px;text-align:center"><div style="font-size:28px;font-weight:900;color:var(--warning)">4</div><div style="font-size:12px;color:var(--text2);margin-top:4px">LLM Providers</div></div>
+    <div style="background:rgba(123,47,190,0.1);border:1px solid rgba(123,47,190,0.25);border-radius:10px;padding:16px;text-align:center"><div style="font-size:28px;font-weight:900;color:#A855F7">26</div><div style="font-size:12px;color:var(--text2);margin-top:4px">Slides</div></div>
+  </div>
+  <p style="margin-top:36px;font-size:13px;color:var(--text3)">Use ← → arrow keys or buttons below · Press <kbd style="background:var(--panel);border:1px solid var(--border);padding:2px 7px;border-radius:4px;font-size:11px">T</kbd> for Table of Contents</p>
+</div></div></div>
+
+<!-- SLIDE 2: OVERVIEW -->
+<div class="slide" data-title="Platform Overview">
+<div class="slide-inner">
+  <div class="slide-tag tb">Introduction</div>
+  <h1 class="st">What is The Compliance Leader?</h1>
+  <p class="lead">An enterprise-grade ISO 20022 compliance platform for financial institutions migrating from SWIFT legacy MT messages to the modern MX (ISO 20022) standard.</p>
+  <div class="cg g3" style="margin-bottom:24px">
+    <div class="mc"><div class="mi" style="background:rgba(0,212,255,0.1)">🔄</div><div><div class="mn">MT → MX Translation</div><div class="md">Convert SWIFT legacy messages to ISO 20022 XML with CBPR+ R2025 compliance</div></div></div>
+    <div class="mc"><div class="mi" style="background:rgba(0,229,160,0.1)">⬅️</div><div><div class="mn">MX → MT Reversal</div><div class="md">Reverse-translate ISO 20022 XML back to SWIFT MT format</div></div></div>
+    <div class="mc"><div class="mi" style="background:rgba(123,47,190,0.15)">📚</div><div><div class="mn">Knowledge Base</div><div class="md">AI-powered RAG system for SWIFT/ISO 20022 documentation queries</div></div></div>
+    <div class="mc"><div class="mi" style="background:rgba(255,184,0,0.1)">🧠</div><div><div class="mn">Prompt Lab</div><div class="md">Interactive prompt engineering course with banking-domain examples</div></div></div>
+    <div class="mc"><div class="mi" style="background:rgba(255,77,109,0.1)">📄</div><div><div class="mn">Document Intelligence</div><div class="md">Upload &amp; query PDF/DOCX compliance documents using AI</div></div></div>
+    <div class="mc"><div class="mi" style="background:rgba(0,212,255,0.1)">🛡️</div><div><div class="mn">Audit &amp; Telemetry</div><div class="md">Immutable cryptographic audit trail with real-time event feed</div></div></div>
+  </div>
+  <div class="co cob"><div class="co-icon">🏦</div><div class="co-body"><div class="co-title">Standards Compliance</div>Enforces <strong>CBPR+ R2025</strong> (effective Nov 22, 2025) and <strong>LYNX</strong> (Canadian domestic) standards. All translations validated against official XSD schemas.</div></div>
+  <div class="split">
+    <div><h2 class="sh">🖥️ Backend</h2><ul class="bl"><li>Python / FastAPI on port 8000</li><li>JWT authentication (60-min access tokens)</li><li>ChromaDB vector store for RAG</li><li>lxml for ISO 20022 XML generation &amp; XSD validation</li><li>SQLite + NDJSON for audit persistence</li></ul></div>
+    <div><h2 class="sh">🌐 Frontend</h2><ul class="bl"><li>Next.js (React) on port 3000</li><li>CodeMirror for syntax-highlighted XML editing</li><li>Server-Sent Events for real-time telemetry</li><li>JWT stored in localStorage + HttpOnly cookies</li><li>Middleware auth guard on all protected routes</li></ul></div>
+  </div>
+</div></div>
+
+<!-- SLIDE 3: REGISTRATION -->
+<div class="slide" data-title="Registration">
+<div class="slide-inner">
+  <div class="slide-tag tg">Step 1 — Getting Started</div>
+  <h1 class="st">Creating Your Account</h1>
+  <p class="lead">Navigate to <span class="mono">http://localhost:3000/register</span></p>
+  <div class="split">
+    <div>
+      <h2 class="sh">📝 Registration Form</h2>
+      <div class="sb" style="flex-direction:column">
+        <div class="sb-bar"><div class="sd" style="background:#FF5F56"></div><div class="sd" style="background:#FFBD2E"></div><div class="sd" style="background:#27C93F"></div><div class="su">localhost:3000/register</div></div>
+        <div class="ss">
+          <div style="max-width:320px;margin:0 auto">
+            <div style="text-align:center;margin-bottom:18px"><div style="font-size:20px;font-weight:800">Create Account</div><div style="font-size:12px;color:var(--text2);margin-top:4px">ISO 20022 Compliance Platform</div></div>
+            <div class="sfg"><label class="sl2">Full Name *</label><input class="si" value="Jane Smith" readonly/></div>
+            <div class="sfg"><label class="sl2">Username *</label><input class="si" value="jsmith" readonly/></div>
+            <div class="sfg"><label class="sl2">Email *</label><input class="si" value="jane@bank.com" readonly/></div>
+            <div class="sfg"><label class="sl2">Password *</label><input class="si" value="••••••••••" readonly/></div>
+            <div class="sfg"><label class="sl2">Confirm Password *</label><input class="si" value="••••••••••" readonly/></div>
+            <button class="sbt sbtp" style="width:100%;justify-content:center">Create Account →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h2 class="sh">🔐 Password Requirements</h2>
+      <div class="card">
+        <p class="body">All 5 rules must pass simultaneously:</p>
+        <ul style="list-style:none">
+          <li style="padding:5px 0;font-size:13px;color:var(--success)">✅ At least 8 characters</li>
+          <li style="padding:5px 0;font-size:13px;color:var(--success)">✅ One uppercase letter (A–Z)</li>
+          <li style="padding:5px 0;font-size:13px;color:var(--success)">✅ One lowercase letter (a–z)</li>
+          <li style="padding:5px 0;font-size:13px;color:var(--success)">✅ One digit (0–9)</li>
+          <li style="padding:5px 0;font-size:13px;color:var(--success)">✅ One special character (!@#$%^&amp;*…)</li>
+        </ul>
+        <div class="ib ibb" style="margin-top:12px;margin-bottom:0"><strong>Example:</strong> <code>Comply@2025!</code></div>
+      </div>
+      <h2 class="sh">📬 After Registration</h2>
+      <ol class="sl"><li>System sends a 6-digit OTP to your email address</li><li>Redirected to <code class="mono">/verify-otp</code></li><li>Enter the OTP within the validity window</li><li>Account activated → redirected to Login</li></ol>
+      <div class="co coy"><div class="co-icon">⚠️</div><div class="co-body"><div class="co-title">OTP Expiry</div>OTP is time-limited. Use <strong>Resend OTP</strong> if it expires. Check spam folder.</div></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- SLIDE 4: LOGIN -->
+<div class="slide" data-title="Login">
+<div class="slide-inner">
+  <div class="slide-tag tg">Step 2 — Getting Started</div>
+  <h1 class="st">Logging In</h1>
+  <p class="lead">Navigate to <span class="mono">http://localhost:3000/login</span> — all protected pages redirect here automatically.</p>
+  <div class="split">
+    <div>
+      <div class="sb" style="flex-direction:column">
+        <div class="sb-bar"><div class="sd" style="background:#FF5F56"></div><div class="sd" style="background:#FFBD2E"></div><div class="sd" style="background:#27C93F"></div><div class="su">localhost:3000/login</div></div>
+        <div class="ss">
+          <div style="max-width:320px;margin:0 auto">
+            <div style="text-align:center;margin-bottom:18px"><div style="font-size:22px;font-weight:900" class="gt">⚡ Compliance Leader</div><div style="font-size:12px;color:var(--text2);margin-top:5px">Sign in to your account</div></div>
+            <div class="sfg"><label class="sl2">Username or Email</label><input class="si" value="jsmith" readonly/></div>
+            <div class="sfg"><label class="sl2">Password</label><input class="si" value="••••••••••" readonly/><div style="font-size:11px;color:var(--primary);margin-top:4px;text-align:right">👁 Show</div></div>
+            <button class="sbt sbtp" style="width:100%;justify-content:center;margin-bottom:10px">🔓 Sign In</button>
+            <div style="text-align:center;font-size:12px;color:var(--text2)">No account? <span style="color:var(--primary)">Register</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h2 class="sh">🔑 How Authentication Works</h2>
+      <ol class="sl">
+        <li>Enter your <strong>username</strong> (or email) and <strong>password</strong></li>
+        <li>Backend verifies credentials → returns JWT access token (60-min expiry)</li>
+        <li>Token stored in <strong>localStorage</strong> + synced to browser cookie</li>
+        <li>All API calls include the token via <code class="mono">Authorization: Bearer &lt;token&gt;</code></li>
+        <li>On expiry, auto-redirect to login with <code class="mono">?redirect=</code> param</li>
+      </ol>
+      <h2 class="sh">🛡️ Security Features</h2>
+      <div class="cg g2" style="gap:10px">
+        <div class="ib ibb" style="margin-bottom:0"><strong>Auth Guard</strong><br/>Spinner shown while verifying — no content leaks before auth resolves</div>
+        <div class="ib ibg" style="margin-bottom:0"><strong>Session Persistence</strong><br/>Sessions survive backend restarts — JWT is stateless</div>
+        <div class="ib iby" style="margin-bottom:0"><strong>Admin Protection</strong><br/>/admin requires admin role cookie</div>
+        <div class="ib ibr" style="margin-bottom:0"><strong>Unverified Email</strong><br/>Login blocked until OTP verified</div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- SLIDE 5: OTP -->
+<div class="slide" data-title="OTP Verification">
+<div class="slide-inner">
+  <div class="slide-tag tg">Step 3 — Getting Started</div>
+  <h1 class="st">OTP Email Verification</h1>
+  <p class="lead">After registering, verify your email before you can log in. A 6-digit OTP is sent to your registered email address.</p>
+  <div class="split">
+    <div>
+      <div class="sb" style="flex-direction:column">
+        <div class="sb-bar"><div class="sd" style="background:#FF5F56"></div><div class="sd" style="background:#FFBD2E"></div><div class="sd" style="background:#27C93F"></div><div class="su">localhost:3000/verify-otp</div></div>
+        <div class="ss">
+          <div style="max-width:320px;margin:0 auto;text-align:center">
+            <div style="font-size:40px;margin-bottom:12px">📬</div>
+            <div style="font-size:18px;font-weight:800;margin-bottom:6px">Check your email</div>
+            <div style="font-size:12px;color:var(--text2);margin-bottom:20px">We sent a 6-digit code to <strong>jane@bank.com</strong></div>
+            <div style="display:flex;gap:8px;justify-content:center;margin-bottom:20px">
+              <input class="si" style="width:44px;text-align:center;font-size:20px;font-weight:700;padding:10px 4px" value="4" readonly/>
+              <input class="si" style="width:44px;text-align:center;font-size:20px;font-weight:700;padding:10px 4px" value="8" readonly/>
+              <input class="si" style="width:44px;text-align:center;font-size:20px;font-weight:700;padding:10px 4px" value="3" readonly/>
+              <input class="si" style="width:44px;text-align:center;font-size:20px;font-weight:700;padding:10px 4px" value="9" readonly/>
+              <input class="si" style="width:44px;text-align:center;font-size:20px;font-weight:700;padding:10px 4px" value="1" readonly/>
+              <input class="si" style="width:44px;text-align:center;font-size:20px;font-weight:700;padding:10px 4px" value="2" readonly/>
+            </div>
+            <button class="sbt sbtg" style="width:100%;justify-content:center;margin-bottom:10px">✅ Verify Account</button>
+            <div style="font-size:12px;color:var(--text2)">Didn't receive it? <span style="color:var(--primary)">Resend OTP</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h2 class="sh">📋 OTP Flow</h2>
+      <ol class="sl">
+        <li>After registration, backend generates a 6-digit OTP and emails it</li>
+        <li>Navigate to <code class="mono">/verify-otp</code> — enter the 6 digits</li>
+        <li>Click <strong>Verify Account</strong> — backend validates OTP</li>
+        <li>On success: "Account verified!" → redirected to <code class="mono">/login</code></li>
+        <li>Log in with your credentials — full access granted</li>
+      </ol>
+      <div class="co cog" style="margin-top:20px"><div class="co-icon">✅</div><div class="co-body"><div class="co-title">Default Role After Verification</div>New accounts get <strong>analyst</strong> role. An admin can promote to <strong>admin</strong> via the Admin Panel.</div></div>
+      <div class="co cob"><div class="co-icon">ℹ️</div><div class="co-body"><div class="co-title">Default Admin Account</div>Platform auto-creates a default admin at startup. Check startup logs or .env for credentials.</div></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- SLIDE 6: DASHBOARD -->
+<div class="slide" data-title="Dashboard">
+<div class="slide-inner">
+  <div class="slide-tag tb">Module 1 — Dashboard</div>
+  <h1 class="st">Dashboard</h1>
+  <p class="lead">Your home page — platform health, activity stats, real-time telemetry, and recent audit events at a glance.</p>
+  <div class="cg g4" style="margin-bottom:20px">
+    <div class="card" style="text-align:center;padding:18px"><div style="font-size:10px;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px">TOTAL TRANSLATIONS</div><div style="font-size:36px;font-weight:900;color:var(--primary)">247</div></div>
+    <div class="card" style="text-align:center;padding:18px"><div style="font-size:10px;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px">LEARN QUERIES</div><div style="font-size:36px;font-weight:900;color:#A855F7">89</div></div>
+    <div class="card" style="text-align:center;padding:18px"><div style="font-size:10px;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px">DOCS INDEXED</div><div style="font-size:36px;font-weight:900;color:var(--warning)">12</div></div>
+    <div class="card" style="text-align:center;padding:18px"><div style="font-size:10px;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px">AUDIT EVENTS</div><div style="font-size:36px;font-weight:900;color:var(--success)">1,034</div></div>
+  </div>
+  <div class="split">
+    <div>
+      <h2 class="sh">📡 System Health Banner</h2>
+      <div class="card" style="display:flex;align-items:center;gap:10px;padding:14px 18px;background:rgba(0,229,160,0.08);border-color:rgba(0,229,160,0.25)"><span style="color:var(--success);font-size:18px">✅</span><span style="color:var(--success);font-weight:700;font-size:13px">SYSTEM NOMINAL — All services operational</span></div>
+      <div class="card" style="display:flex;align-items:center;gap:10px;padding:14px 18px;background:rgba(255,77,109,0.08);border-color:rgba(255,77,109,0.25);margin-top:8px"><span style="color:var(--danger);font-size:18px">⚠️</span><span style="color:var(--danger);font-weight:700;font-size:13px">SYSTEM DEGRADED — Backend unreachable</span></div>
+      <p class="body" style="margin-top:10px">Checked every 30 seconds automatically.</p>
+    </div>
+    <div>
+      <h2 class="sh">📊 Live Telemetry Feed</h2>
+      <div class="card">
+        <p class="body">Real-time event stream via <strong>Server-Sent Events (SSE)</strong>. Auto-updates without page refresh.</p>
+        <ul class="bl"><li>Last 10 events with timestamps</li><li>Colour-coded: INFO (blue) WARN (yellow) ERROR (red)</li><li>Events: translations, queries, doc uploads, validation exceptions</li><li>Full history in Audit &amp; Telemetry module</li></ul>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- SLIDE 7: MT TYPES -->
+<div class="slide" data-title="MT Message Types">
+<div class="slide-inner">
+  <div class="slide-tag ty">Module 2 — MT → MX Engine</div>
+  <h1 class="st">Supported SWIFT MT Message Types</h1>
+  <p class="lead">10 MT types across CBPR+ (global cross-border) and LYNX (Canadian domestic) schemes.</p>
+  <table class="dt">
+    <thead><tr><th>MT Type</th><th>Description</th><th>Scheme</th><th>ISO 20022 Target</th></tr></thead>
+    <tbody>
+      <tr><td><span class="mono">MT103</span></td><td>Customer Credit Transfer</td><td><span class="badge bp">CBPR+</span></td><td><span class="mono">pacs.008.001.08</span></td></tr>
+      <tr><td><span class="mono">MT103 STP</span></td><td>Customer Credit Transfer (Straight Through Processing)</td><td><span class="badge bp">CBPR+</span></td><td><span class="mono">pacs.008.001.08</span></td></tr>
+      <tr><td><span class="mono">MT202</span></td><td>FI-to-FI Credit Transfer CORE</td><td><span class="badge bp">CBPR+</span></td><td><span class="mono">pacs.009.001.08</span></td></tr>
+      <tr><td><span class="mono">MT202 COV</span></td><td>Cover Payment</td><td><span class="badge bp">CBPR+</span></td><td><span class="mono">pacs.009.001.08</span></td></tr>
+      <tr><td><span class="mono">MT204</span></td><td>Financial Market Direct Debit</td><td><span class="badge bp">CBPR+</span></td><td><span class="mono">pacs.009.001.08</span></td></tr>
+      <tr><td><span class="mono">MT103 RETURN</span></td><td>Customer Payment Return</td><td><span class="badge bp">CBPR+</span></td><td><span class="mono">pacs.004.001.09</span></td></tr>
+      <tr><td><span class="mono">MT202 RETURN</span></td><td>FI Payment Return</td><td><span class="badge bp">CBPR+</span></td><td><span class="mono">pacs.004.001.09</span></td></tr>
+      <tr><td><span class="mono">MT205 🍁</span></td><td>Canadian Domestic FI Transfer</td><td><span class="badge bw">LYNX</span></td><td><span class="mono">pacs.009.001.08</span></td></tr>
+      <tr><td><span class="mono">MT205 COV 🍁</span></td><td>Canadian Cover Payment</td><td><span class="badge bw">LYNX</span></td><td><span class="mono">pacs.009.001.08</span></td></tr>
+      <tr><td><span class="mono">MT205 RETURN 🍁</span></td><td>LYNX Payment Return</td><td><span class="badge bw">LYNX</span></td><td><span class="mono">pacs.004.001.09</span></td></tr>
+    </tbody>
+  </table>
+  <div class="split" style="margin-top:20px">
+    <div class="co cob"><div class="co-icon">📘</div><div class="co-body"><div class="co-title">CBPR+</div>Global SWIFT standard for cross-border transactions. MT103/MT202 retired from SWIFT FINplus on <strong>November 22, 2025</strong>. Must use pacs.008/009 equivalents.</div></div>
+    <div class="co coy"><div class="co-icon">🍁</div><div class="co-body"><div class="co-title">LYNX</div>Payments Canada's high-value domestic payment system using same ISO 20022 XSD schemas with Canadian-specific BAH rules and CAD currency conventions.</div></div>
+  </div>
+</div></div>
+
+<!-- SLIDE 8: MT103 FIELDS -->
+<div class="slide" data-title="MT103 Field Reference">
+<div class="slide-inner">
+  <div class="slide-tag ty">Module 2 — Field Reference</div>
+  <h1 class="st">MT103 Field-by-Field Reference</h1>
+  <p class="lead">Every SWIFT field in an MT103 message and its ISO 20022 pacs.008 mapping.</p>
+  <table class="dt">
+    <thead><tr><th>MT Field</th><th>Name</th><th>Required</th><th>ISO 20022 Mapping</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">:20:</td><td>Transaction Reference Number</td><td>✅ Mandatory</td><td class="mono">GrpHdr/MsgId + PmtId/InstrId</td></tr>
+      <tr><td class="mono">{121}</td><td>UETR (Unique End-to-End Ref)</td><td>✅ CBPR+ Mandatory</td><td class="mono">PmtId/UETR (UUID4)</td></tr>
+      <tr><td class="mono">:23B:</td><td>Bank Operation Code</td><td>✅ Mandatory</td><td>Validation only</td></tr>
+      <tr><td class="mono">:32A:</td><td>Value Date / Currency / Amount</td><td>✅ Mandatory</td><td class="mono">IntrBkSttlmAmt + IntrBkSttlmDt</td></tr>
+      <tr><td class="mono">:33B:</td><td>Currency / Instructed Amount</td><td>⚪ Optional</td><td class="mono">InstdAmt (only if CCY ≠ :32A:)</td></tr>
+      <tr><td class="mono">:50K/:50A</td><td>Ordering Customer (Debtor)</td><td>✅ Mandatory</td><td class="mono">Dbtr + DbtrAcct</td></tr>
+      <tr><td class="mono">:52A:</td><td>Ordering Institution</td><td>⚪ Optional</td><td class="mono">DbtrAgt (BIC)</td></tr>
+      <tr><td class="mono">:53A/B:</td><td>Sender's Correspondent</td><td>⚪ Optional</td><td class="mono">InstgAgt</td></tr>
+      <tr><td class="mono">:56A:</td><td>Intermediary Institution</td><td>⚪ Optional</td><td class="mono">IntrmyAgt1</td></tr>
+      <tr><td class="mono">:57A:</td><td>Account With Institution</td><td>✅ Mandatory</td><td class="mono">CdtrAgt (BIC)</td></tr>
+      <tr><td class="mono">:59/:59A</td><td>Beneficiary Customer (Creditor)</td><td>✅ Mandatory</td><td class="mono">Cdtr + CdtrAcct</td></tr>
+      <tr><td class="mono">:70:</td><td>Remittance Information</td><td>⚪ Optional</td><td class="mono">RmtInf/Ustrd</td></tr>
+      <tr><td class="mono">:71A:</td><td>Details of Charges</td><td>✅ Mandatory</td><td class="mono">ChrgBr (OUR→DEBT, SHA→SHAR, BEN→CRED)</td></tr>
+      <tr><td class="mono">:72:</td><td>Sender to Receiver Info</td><td>⚪ Optional</td><td class="mono">InstrForCdtrAgt / InstrForNxtAgt</td></tr>
+      <tr><td class="mono">:26T:</td><td>Transaction Type Code</td><td>⚪ Optional</td><td class="mono">Purp/Cd</td></tr>
+    </tbody>
+  </table>
+  <div class="co cob" style="margin-top:16px"><div class="co-icon">⚡</div><div class="co-body"><div class="co-title">CBPR+ R2025: ChrgBr = SHAR enforced</div>Only SHAR (SHA) is permitted at the interbank level for pacs.008. OUR (DEBT) and BEN (CRED) are rejected automatically.</div></div>
+</div></div>
+
+<!-- SLIDE 9: MT→MX WALKTHROUGH -->
+<div class="slide" data-title="MT→MX Translation Walkthrough">
+<div class="slide-inner">
+  <div class="slide-tag ty">Module 2 — Walkthrough</div>
+  <h1 class="st">How to Translate MT → MX (Step by Step)</h1>
+  <p class="lead">Walkthrough of the <strong>MT → MX Engine</strong> at <span class="mono">/translate</span>.</p>
+  <div class="split">
+    <div>
+      <h2 class="sh">🚀 Step-by-Step</h2>
+      <ol class="sl">
+        <li>Click <strong>MT → MX Engine</strong> in the left sidebar</li>
+        <li>Select your <strong>Source Message Type</strong> (e.g. MT103)</li>
+        <li>Click <strong>Load Sample</strong> to auto-populate a valid example, or paste your own MT text</li>
+        <li>Choose <strong>Translation Mode</strong>: Partial (strict) or Full</li>
+        <li>Click the <strong>Translate →</strong> button</li>
+        <li>View the generated ISO 20022 XML in the right panel with syntax highlighting</li>
+        <li>Check the <strong>Validation Badge</strong> — PASS (green) or PARTIAL (yellow)</li>
+        <li>Use <strong>Copy</strong> or <strong>Download XML</strong> to export</li>
+      </ol>
+      <div class="co cog" style="margin-top:16px"><div class="co-icon">💡</div><div class="co-body"><div class="co-title">Scheme &amp; Target Indicator</div>Top-right badge shows active scheme (CBPR+ or 🍁 LYNX) and target (e.g. pacs.008.001.08). Updates automatically when you change MT type.</div></div>
+    </div>
+    <div>
+      <h2 class="sh">📋 UI Controls Reference</h2>
+      <table class="dt">
+        <thead><tr><th>Control</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Message Type dropdown</strong></td><td>Select from 10 MT types; switches scheme automatically</td></tr>
+          <tr><td><strong>Load Sample</strong></td><td>Fetches a pre-built example from the API</td></tr>
+          <tr><td><strong>Clear</strong></td><td>Clears both input and output panels</td></tr>
+          <tr><td><strong>Full Mode toggle</strong></td><td>Forces XML output even with CBPR+ warnings</td></tr>
+          <tr><td><strong>Translate →</strong></td><td>Sends MT raw text to API, returns ISO 20022 XML</td></tr>
+          <tr><td><strong>Copy</strong></td><td>Copies generated XML to clipboard</td></tr>
+          <tr><td><strong>Download XML</strong></td><td>Saves as .xml file with type + timestamp name</td></tr>
+          <tr><td><strong>Validation Badge</strong></td><td>Shows XSD + CBPR+ rule validation result</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div></div>
+
+<!-- SLIDE 10: TRANSLATION MODES -->
+<div class="slide" data-title="Translation Modes">
+<div class="slide-inner">
+  <div class="slide-tag ty">Module 2 — Translation Modes</div>
+  <h1 class="st">Partial vs Full Translation Mode</h1>
+  <p class="lead">The Translation Mode toggle controls how strictly CBPR+ compliance rules are enforced.</p>
+  <div class="split" style="margin-bottom:24px">
+    <div class="card" style="border-color:rgba(255,184,0,0.3)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><div class="tog" style="pointer-events:none">🛡️ Partial (Strict) Mode</div></div>
+      <ul class="bl"><li><strong>Halts</strong> on any CBPR+ rule violation</li><li>Returns HTTP 422 with detailed error</li><li>No XML output on errors — safe for production</li><li>Default mode when app loads</li></ul>
+      <div class="ib iby" style="margin-top:12px;margin-bottom:0">Error example: <em>"ChrgBr value 'DEBT' not permitted at interbank level under CBPR+ R2025"</em></div>
+    </div>
+    <div class="card" style="border-color:rgba(0,212,255,0.3)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><div class="tog on" style="pointer-events:none">⚡ Full Translation Mode</div></div>
+      <ul class="bl"><li><strong>Continues</strong> even with CBPR+ rule warnings</li><li>Generates ISO 20022 XML regardless</li><li>Warnings listed alongside XML output</li><li>Status shows <span class="badge bw">PARTIAL</span> instead of <span class="badge bp">PASS</span></li><li>Ideal for: Testing, migration analysis</li></ul>
+      <div class="ib ibb" style="margin-top:12px;margin-bottom:0">Use when you want to see the full XML even if the message doesn't fully comply yet.</div>
+    </div>
+  </div>
+  <h2 class="sh">📊 Validation Status Badges</h2>
+  <table class="dt">
+    <thead><tr><th>Badge</th><th>Meaning</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge bp">✅ PASS</span></td><td>XML valid against XSD schema + all CBPR+ rules pass</td><td>XML is production-ready</td></tr>
+      <tr><td><span class="badge bw">⚠️ PARTIAL</span></td><td>XML generated but one or more CBPR+ warnings exist</td><td>Review warnings; fix before production use</td></tr>
+      <tr><td><span class="badge be">❌ VALIDATION ERROR</span></td><td>XSD schema validation failed — XML structure invalid</td><td>Check error details; correct MT input</td></tr>
+      <tr><td><span class="badge be">🚫 ERROR</span></td><td>MT parsing failed or network error</td><td>Verify MT raw text format is correct</td></tr>
+    </tbody>
+  </table>
+</div></div>
+
+<!-- SLIDE 11: MT103→pacs.008 EXAMPLE -->
+<div class="slide" data-title="MT103 → pacs.008 Example">
+<div class="slide-inner">
+  <div class="slide-tag ty">Module 2 — Live Example</div>
+  <h1 class="st">MT103 → pacs.008 Translation Example</h1>
+  <p class="lead">A complete annotated example showing raw MT103 input and the resulting ISO 20022 pacs.008.001.08 XML output.</p>
+  <div class="split">
+    <div>
+      <h3 class="sbh" style="color:var(--warning)">📥 Input: Raw SWIFT MT103</h3>
+      <div class="cb" style="font-size:11px">
+<span class="cm">// SWIFT block structure</span>
+{1:F01<span class="val">DEUTDEBB1XXX</span>0000000000}
+{2:I103<span class="val">BNPAFRPP</span>XXXXN}
+{3:{108:MT103SAMPLE}
+   {121:<span class="val">eb1e6758-7116-4176-b538-7eb43ff895f3</span>}}
+{4:
+<span class="kw">:20:</span><span class="val">REF20260523001</span>     <span class="cm">← Txn Reference</span>
+<span class="kw">:23B:</span><span class="val">CRED</span>
+<span class="kw">:32A:</span><span class="val">260523USD50000,00</span>  <span class="cm">← Date/CCY/Amt</span>
+<span class="kw">:50K:</span><span class="val">/12345678
+ACME CORPORATION
+123 MAIN STREET
+NEW YORK NY 10001</span>     <span class="cm">← Debtor</span>
+<span class="kw">:52A:</span><span class="val">DEUTDEDB</span>           <span class="cm">← Ordering Bank</span>
+<span class="kw">:57A:</span><span class="val">BNPAFRPP</span>           <span class="cm">← Creditor Agent</span>
+<span class="kw">:59:</span><span class="val">/DE89370400440532013000
+HANS MUELLER GMBH
+HAUPTSTRASSE 1
+BERLIN</span>                <span class="cm">← Creditor</span>
+<span class="kw">:70:</span><span class="val">PAYMENT INV-456</span>
+<span class="kw">:71A:</span><span class="val">SHA</span>               <span class="cm">← Charge Bearer</span>
+-}{5:{CHK:ABCDEF012345}}
+      </div>
+    </div>
+    <div>
+      <h3 class="sbh" style="color:var(--primary)">📤 Output: ISO 20022 pacs.008.001.08</h3>
+      <div class="cb" style="font-size:10.5px">
+<span class="tag">&lt;Document</span> <span class="attr">xmlns</span>=<span class="str">"urn:iso:std:iso:20022:tech:xsd:pacs.008.001.08"</span><span class="tag">&gt;</span>
+ <span class="tag">&lt;FIToFICstmrCdtTrf&gt;</span>
+  <span class="tag">&lt;GrpHdr&gt;</span>
+   <span class="tag">&lt;MsgId&gt;</span><span class="val">REF20260523001</span><span class="tag">&lt;/MsgId&gt;</span>
+   <span class="tag">&lt;CreDtTm&gt;</span><span class="val">2026-05-23T00:00:00</span><span class="tag">&lt;/CreDtTm&gt;</span>
+   <span class="tag">&lt;NbOfTxs&gt;</span><span class="val">1</span><span class="tag">&lt;/NbOfTxs&gt;</span>
+   <span class="tag">&lt;SttlmInf&gt;&lt;SttlmMtd&gt;</span><span class="val">CLRG</span><span class="tag">&lt;/SttlmMtd&gt;&lt;/SttlmInf&gt;</span>
+  <span class="tag">&lt;/GrpHdr&gt;</span>
+  <span class="tag">&lt;CdtTrfTxInf&gt;</span>
+   <span class="tag">&lt;PmtId&gt;</span>
+    <span class="tag">&lt;InstrId&gt;</span><span class="val">REF20260523001</span><span class="tag">&lt;/InstrId&gt;</span>
+    <span class="tag">&lt;EndToEndId&gt;</span><span class="val">REF20260523001</span><span class="tag">&lt;/EndToEndId&gt;</span>
+    <span class="tag">&lt;UETR&gt;</span><span class="val">eb1e6758-7116-4176-b538-7eb43ff895f3</span><span class="tag">&lt;/UETR&gt;</span>
+   <span class="tag">&lt;/PmtId&gt;</span>
+   <span class="tag">&lt;IntrBkSttlmAmt</span> <span class="attr">Ccy</span>=<span class="str">"USD"</span><span class="tag">&gt;</span><span class="val">50000.00</span><span class="tag">&lt;/IntrBkSttlmAmt&gt;</span>
+   <span class="tag">&lt;IntrBkSttlmDt&gt;</span><span class="val">2026-05-23</span><span class="tag">&lt;/IntrBkSttlmDt&gt;</span>
+   <span class="tag">&lt;ChrgBr&gt;</span><span class="val">SHAR</span><span class="tag">&lt;/ChrgBr&gt;</span>
+   <span class="tag">&lt;DbtrAgt&gt;&lt;FinInstnId&gt;&lt;BICFI&gt;</span><span class="val">DEUTDEDB</span><span class="tag">&lt;/BICFI&gt;&lt;/FinInstnId&gt;&lt;/DbtrAgt&gt;</span>
+   <span class="tag">&lt;Dbtr&gt;&lt;Nm&gt;</span><span class="val">ACME CORPORATION</span><span class="tag">&lt;/Nm&gt;</span>
+    <span class="tag">&lt;PstlAdr&gt;&lt;TwnNm&gt;</span><span class="val">NEW YORK</span><span class="tag">&lt;/TwnNm&gt;&lt;Ctry&gt;</span><span class="val">US</span><span class="tag">&lt;/Ctry&gt;&lt;/PstlAdr&gt;&lt;/Dbtr&gt;</span>
+   <span class="tag">&lt;DbtrAcct&gt;&lt;Id&gt;&lt;Othr&gt;&lt;Id&gt;</span><span class="val">12345678</span><span class="tag">&lt;/Id&gt;&lt;/Othr&gt;&lt;/Id&gt;&lt;/DbtrAcct&gt;</span>
+   <span class="tag">&lt;CdtrAgt&gt;&lt;FinInstnId&gt;&lt;BICFI&gt;</span><span class="val">BNPAFRPP</span><span class="tag">&lt;/BICFI&gt;&lt;/FinInstnId&gt;&lt;/CdtrAgt&gt;</span>
+   <span class="tag">&lt;Cdtr&gt;&lt;Nm&gt;</span><span class="val">HANS MUELLER GMBH</span><span class="tag">&lt;/Nm&gt;&lt;/Cdtr&gt;</span>
+   <span class="tag">&lt;CdtrAcct&gt;&lt;Id&gt;&lt;IBAN&gt;</span><span class="val">DE89370400440532013000</span><span class="tag">&lt;/IBAN&gt;&lt;/Id&gt;&lt;/CdtrAcct&gt;</span>
+   <span class="tag">&lt;RmtInf&gt;&lt;Ustrd&gt;</span><span class="val">PAYMENT INV-456</span><span class="tag">&lt;/Ustrd&gt;&lt;/RmtInf&gt;</span>
+  <span class="tag">&lt;/CdtTrfTxInf&gt;</span>
+ <span class="tag">&lt;/FIToFICstmrCdtTrf&gt;</span>
+<span class="tag">&lt;/Document&gt;</span>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- SLIDE 12: MX→MT ENGINE -->
+<div class="slide" data-title="MX → MT Engine">
+<div class="slide-inner">
+  <div class="slide-tag tb">Module 3 — MX → MT Engine</div>
+  <h1 class="st">Reverse Translation: ISO 20022 → SWIFT MT</h1>
+  <p class="lead">The <strong>MX → MT Engine</strong> at <span class="mono">/mx-translate</span> converts ISO 20022 XML back to SWIFT MT format. Supports two operating modes.</p>
+  <div class="split">
+    <div>
+      <h2 class="sh">📋 Supported Input Types</h2>
+      <table class="dt">
+        <thead><tr><th>ISO 20022 Input</th><th>Output MT</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">pacs.008.001.08</td><td class="mono">MT103 (CBPR+ or LYNX)</td></tr>
+          <tr><td class="mono">pacs.009 CORE</td><td class="mono">MT202 / MT205</td></tr>
+          <tr><td class="mono">pacs.009 COV</td><td class="mono">MT202 COV / MT205 COV</td></tr>
+          <tr><td class="mono">pacs.004.001.09</td><td class="mono">MT103RETURN / MT202RETURN</td></tr>
+        </tbody>
+      </table>
+      <h2 class="sh" style="margin-top:20px">🔄 Two Operating Modes</h2>
+      <div class="card" style="margin-bottom:10px;border-color:rgba(0,212,255,0.2)"><div style="font-weight:700;margin-bottom:6px;color:var(--primary)">Mode 1: MX → MT Translation</div><p class="body">Paste ISO 20022 XML → select type &amp; scheme → Translate → receive raw SWIFT MT message</p></div>
+      <div class="card" style="border-color:rgba(255,184,0,0.2)"><div style="font-weight:700;margin-bottom:6px;color:var(--warning)">Mode 2: pacs.008 → Cover pacs.009</div><p class="body">Convert a pacs.008 into its cover payment (pacs.009 COV) with a fresh UETR for correspondent banking flows.</p></div>
+    </div>
+    <div>
+      <h2 class="sh">🚀 Step-by-Step</h2>
+      <ol class="sl">
+        <li>Click <strong>MX → MT Engine</strong> in the sidebar</li>
+        <li>Select <strong>Mode</strong>: MX → MT or pacs.008 → Cover</li>
+        <li>Select <strong>ISO 20022 message type</strong></li>
+        <li>Select <strong>Scheme</strong>: CBPR+ or LYNX</li>
+        <li>Click <strong>Load Sample</strong> or paste your XML</li>
+        <li>Click <strong>Translate →</strong></li>
+        <li>Raw SWIFT MT output appears in the right panel</li>
+        <li>Copy or Download the result</li>
+      </ol>
+      <div class="co cob" style="margin-top:12px"><div class="co-icon">🔍</div><div class="co-body"><div class="co-title">UETR Rule in Cover Mode</div>Cover pacs.009 gets a <strong>new UETR</strong>; original UETR preserved as reference — follows CBPR+ cover payment chain guidelines.</div></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- SLIDE 13: KNOWLEDGE BASE -->
+<div class="slide" data-title="Knowledge Base">
+<div class="slide-inner">
+  <div class="slide-tag tp">Module 4 — Knowledge Base</div>
+  <h1 class="st">AI-Powered Knowledge Base</h1>
+  <p class="lead">The <strong>Knowledge</strong> module at <span class="mono">/learn</span> — an interactive RAG chatbot trained on SWIFT, ISO 20022, CBPR+, and LYNX documentation.</p>
+  <div class="split">
+    <div>
+      <h2 class="sh">💬 How to Use</h2>
+      <ol class="sl">
+        <li>Click <strong>Knowledge</strong> in the sidebar</li>
+        <li>Type your question, or click a <strong>Quick Start card</strong></li>
+        <li>Optionally select a <strong>Guideline Set</strong> to scope the search</li>
+        <li>Press Enter or click Send</li>
+        <li>AI searches your documents + built-in knowledge and returns an answer</li>
+        <li>Expand <strong>Source References</strong> to see which documents were used</li>
+        <li>Export the conversation as <strong>PDF</strong> or <strong>DOCX</strong></li>
+      </ol>
+      <h2 class="sh" style="margin-top:16px">⚡ Quick Start Topics</h2>
+      <div class="cg" style="gap:8px">
+        <div class="ib ibb" style="margin-bottom:0;font-size:12px">💱 "What is MT103? Explain the SWIFT MT103 Customer Credit Transfer format."</div>
+        <div class="ib ibb" style="margin-bottom:0;font-size:12px">🔄 "How does MT103 map to pacs.008 in ISO 20022 CBPR+?"</div>
+        <div class="ib ibb" style="margin-bottom:0;font-size:12px">🔐 "What is a UETR and how is it generated per ISO 20022 standards?"</div>
+        <div class="ib ibb" style="margin-bottom:0;font-size:12px">📋 "What are the key CBPR+ compliance rules for cross-border payments?"</div>
+      </div>
+    </div>
+    <div>
+      <h2 class="sh">📚 Guideline Sets</h2>
+      <div class="card"><ul class="bl"><li><strong>All Guidelines</strong> — all indexed documents</li><li><strong>CBPR+ R2025</strong> — SWIFT cross-border rules</li><li><strong>LYNX</strong> — Canadian domestic rules</li><li><strong>ISO 20022 Core</strong> — base schema documentation</li><li><strong>Custom</strong> — defined by your uploads</li></ul></div>
+      <h2 class="sh" style="margin-top:16px">📤 Conversation Export</h2>
+      <div class="card"><ul class="bl"><li><strong>Export PDF</strong> — formatted PDF of full Q&amp;A conversation</li><li><strong>Export DOCX</strong> — Word document for editing/sharing</li><li>Both include timestamps, source citations, version badges</li></ul></div>
+      <div class="co" style="background:rgba(123,47,190,0.08);border:1px solid rgba(123,47,190,0.25);margin-top:0"><div class="co-icon">🤖</div><div class="co-body"><div class="co-title" style="color:#A855F7">RAG Architecture</div>Answers combine: (1) document chunks from ChromaDB, (2) LLM's built-in knowledge. Source chunks shown with confidence scores.</div></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- SLIDE 14: PROMPT LAB -->
+<div class="slide" data-title="Prompt Lab">
+<div class="slide-inner">
+  <div class="slide-tag tp">Module 5 — Prompt Lab</div>
+  <h1 class="st">Prompt Engineering Lab</h1>
+  <p class="lead">Interactive course at <span class="mono">/prompt-engineering</span> teaching prompt engineering in the context of banking and compliance AI systems.</p>
+  <div class="split">
+    <div>
+      <h2 class="sh">📚 8 Topics Covered</h2>
+      <table class="dt">
+        <thead><tr><th>Topic</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>🧠 <strong>Introduction</strong></td><td>What is prompt engineering and why it matters</td></tr>
+          <tr><td>🎯 <strong>Zero-Shot</strong></td><td>Asking without examples — direct instructions</td></tr>
+          <tr><td>📊 <strong>Few-Shot</strong></td><td>Providing examples to guide AI responses</td></tr>
+          <tr><td>🔗 <strong>Chain of Thought</strong></td><td>Step-by-step reasoning for complex compliance tasks</td></tr>
+          <tr><td>✨ <strong>Role Prompting</strong></td><td>Giving the AI a specific expert persona</td></tr>
+          <tr><td>📄 <strong>Structured Output</strong></td><td>Getting JSON/XML responses from AI</td></tr>
+          <tr><td>🗄️ <strong>RAG Prompting</strong></td><td>Prompting with document retrieval context</td></tr>
+          <tr><td>❌ <strong>Anti-Patterns</strong></td><td>Common mistakes and how to fix them</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h2 class="sh">🚀 How to Use</h2>
+      <ol class="sl">
+        <li>Click <strong>Prompt Lab</strong> in the sidebar</li>
+        <li>Browse topic cards on the left panel</li>
+        <li>Click any topic to load description, technique tags, and examples</li>
+        <li>Click an example to expand — shows Bad Prompt vs Good Prompt</li>
+        <li>Use <strong>Try It</strong> button to send example to the live LLM</li>
+        <li>View AI response in the right panel</li>
+        <li>Copy prompts for use in your own workflows</li>
+      </ol>
+      <div class="card" style="margin-top:16px">
+        <h3 class="sbh">Example: Bad vs Good Prompt</h3>
+        <p style="font-size:12px;color:var(--danger);margin-bottom:8px">❌ <strong>Bad:</strong> "Tell me about SWIFT"</p>
+        <p style="font-size:12px;color:var(--success)">✅ <strong>Good:</strong> "You are a SWIFT compliance expert. List the 5 mandatory fields in an MT103 message and explain the consequence of each being missing under CBPR+ R2025 rules."</p>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- SLIDE 15: DOCUMENTS -->
+<div class="slide" data-title="Document Intelligence">
+<div class="slide-inner">
+  <div class="slide-tag ty">Module 6 — Document Intelligence</div>
+  <h1 class="st">Document Intelligence</h1>
+  <p class="lead">Upload PDF or DOCX compliance documents at <span class="mono">/documents</span> and query them using AI-powered search.</p>
+  <div class="split">
+    <div>
+      <h2 class="sh">📤 Uploading Documents</h2>
+      <ol class="sl">
+        <li>Click <strong>Documents</strong> in the sidebar</li>
+        <li>Drag &amp; drop PDF/DOCX onto the upload zone, or click to browse</li>
+        <li>Select a <strong>Guideline Set</strong> to categorize the document</li>
+        <li>Click <strong>Upload &amp; Index</strong></li>
+        <li>System splits document into chunks → stores in ChromaDB</li>
+        <li>Document appears in the <strong>Indexed Documents</strong> list</li>
+      </ol>
+      <h2 class="sh" style="margin-top:16px">🔍 Querying Documents</h2>
+      <ol class="sl">
+        <li>Type your question in the <strong>Document Query</strong> input</li>
+        <li>Or click one of the <strong>Example Queries</strong> for instant demos</li>
+        <li>Press Search</li>
+        <li>AI returns answer + shows which document chunks were used (with scores)</li>
+        <li>Click any source citation to expand and read the exact text chunk</li>
+      </ol>
+    </div>
+    <div>
+      <h2 class="sh">📋 Example Queries</h2>
+      <div class="card"><ul class="bl" style="font-size:13px"><li>"What are the mandatory fields for MT103?"</li><li>"Explain the CBPR+ settlement windows"</li><li>"What is the purpose of field 72 in SWIFT messages?"</li><li>"How is BIC validation performed?"</li><li>"Describe the ISO 20022 pain.001 message structure"</li></ul></div>
+      <h2 class="sh" style="margin-top:16px">🗑️ Managing Documents</h2>
+      <div class="card"><ul class="bl"><li>Each document shows: filename, chunk count, upload date, file type</li><li>Click <strong>Delete (🗑️)</strong> to remove document and its vectors from ChromaDB</li><li>Deletion is permanent — all associated search index entries removed</li></ul></div>
+      <div class="co coy"><div class="co-icon">⚠️</div><div class="co-body"><div class="co-title">Supported Formats</div>PDF and DOCX only. Large documents are automatically chunked into overlapping segments for better search precision.</div></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- SLIDE 16: AUDIT -->
+<div class="slide" data-title="Audit & Telemetry">
+<div class="slide-inner">
+  <div class="slide-tag tg">Module 7 — Audit &amp; Telemetry</div>
+  <h1 class="st">Audit &amp; Telemetry</h1>
+  <p class="lead">Cryptographically signed, immutable audit trail at <span class="mono">/audit</span> — every action on the platform is logged and hashed.</p>
+  <div class="split">
+    <div>
+      <h2 class="sh">🛡️ Audit Log Features</h2>
+      <ul class="bl"><li><strong>Immutable entries</strong> — SHA-256 hash of each log entry</li><li><strong>Paginated table</strong> — 10 entries per page</li><li><strong>Filters</strong> — event type, module, search text, date range</li><li><strong>Real-time auto-refresh</strong> — new events appear automatically</li><li><strong>Export to JSON</strong> — download full audit log</li></ul>
+      <h2 class="sh" style="margin-top:16px">📋 Event Types Logged</h2>
+      <table class="dt">
+        <thead><tr><th>Event Type</th><th>Triggered By</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">TRANSLATION_SUCCESS</td><td>Successful MT→MX or MX→MT translation</td></tr>
+          <tr><td class="mono">VALIDATION_EXCEPTION</td><td>CBPR+ rule violation in strict mode</td></tr>
+          <tr><td class="mono">LEARN_QUERY</td><td>Knowledge base question asked</td></tr>
+          <tr><td class="mono">DOCUMENT_UPLOAD</td><td>PDF/DOCX uploaded and indexed</td></tr>
+          <tr><td class="mono">DOCUMENT_QUERY</td><td>Document intelligence search performed</td></tr>
+          <tr><td class="mono">AUDIT_EXPORT</td><td>Audit log downloaded</td></tr>
+          <tr><td class="mono">SYSTEM_STARTUP</td><td>Backend server started</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h2 class="sh">📡 Live Telemetry Feed</h2>
+      <div class="card" style="margin-bottom:16px"><p class="body">Right panel shows events via <strong>Server-Sent Events (SSE)</strong>. Each event has:</p><ul class="bl" style="font-size:13px"><li>Timestamp</li><li>Severity: <span style="color:var(--primary)">INFO</span> / <span style="color:var(--warning)">WARN</span> / <span style="color:var(--danger)">ERROR</span></li><li>Event type and module</li><li>Summary message</li></ul></div>
+      <h2 class="sh">🔍 Filtering Logs</h2>
+      <ol class="sl">
+        <li>Use the <strong>Event Type</strong> dropdown to filter by category</li>
+        <li>Enter keyword in <strong>Search</strong> for full-text search</li>
+        <li>Set <strong>Date From / Date To</strong> for time-range filtering</li>
+        <li>Combine multiple filters simultaneously</li>
+        <li>Click <strong>Refresh</strong> to reload with current filters</li>
+      </ol>
+      <div class="co cog"><div class="co-icon">🔐</div><div class="co-body"><div class="co-title">Cryptographic Integrity</div>Each entry includes a SHA-256 hash. Tampering changes the hash — alterations are detectable.</div></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- SLIDE 17: LLM SETTINGS -->
+<div class="slide" data-title="LLM Settings">
+<div class="slide-inner">
+  <div class="slide-tag tb">Settings — LLM Configuration</div>
+  <h1 class="st">LLM Provider Settings</h1>
+  <p class="lead">Accessible via the <strong>⚙️ Settings gear icon</strong> in the sidebar. Controls which AI model powers the Knowledge Base, Prompt Lab, and Document Intelligence.</p>
+  <div class="split">
+    <div>
+      <h2 class="sh">🤖 Supported Providers</h2>
+      <table class="dt">
+        <thead><tr><th>Provider</th><th>Best Models (Sep 2026)</th><th>API Key</th></tr></thead>
+        <tbody>
+          <tr><td>✦ <strong>Google Gemini</strong></td><td class="mono">gemini-2.0-flash (default)<br/>gemini-3.5-flash, gemini-3.8-flash</td><td>aistudio.google.com</td></tr>
+          <tr><td>⚡ <strong>Groq</strong></td><td class="mono">llama-3.1-8b-instant (fast)<br/>llama-4-scout-17b-16e-instruct</td><td>console.groq.com</td></tr>
+          <tr><td>◆ <strong>OpenAI</strong></td><td class="mono">gpt-4o, gpt-4o-mini<br/>gpt-4-turbo</td><td>platform.openai.com</td></tr>
+          <tr><td>◉ <strong>Ollama</strong></td><td class="mono">llama3, llama3.1<br/>mistral, codellama</td><td>No key (local)</td></tr>
+        </tbody>
+      </table>
+      <div class="co coy" style="margin-top:12px"><div class="co-icon">⚠️</div><div class="co-body"><div class="co-title">Decommissioned Groq Models — DO NOT USE</div><code>llama3-70b-8192</code>, <code>llama3-8b-8192</code>, <code>mixtral-8x7b-32768</code> — return 400 errors.</div></div>
+    </div>
+    <div>
+      <h2 class="sh">⚙️ How to Change LLM Provider</h2>
+      <ol class="sl">
+        <li>Click the <strong>⚙️ gear icon</strong> at the bottom of the sidebar</li>
+        <li>The LLM Config panel slides open</li>
+        <li>Select your desired <strong>Provider</strong> from the dropdown</li>
+        <li>Select a <strong>Model</strong> from the available list</li>
+        <li>Enter your <strong>API Key</strong> (masked — click 👁️ to reveal)</li>
+        <li>For Ollama: set <strong>Base URL</strong> (default: <code>http://localhost:11434</code>)</li>
+        <li>Click <strong>Save Configuration</strong></li>
+        <li>Change takes effect immediately for all AI-powered features</li>
+      </ol>
+      <h2 class="sh" style="margin-top:16px">📜 Configuration History</h2>
+      <div class="card"><p class="body">Click the <strong>History tab</strong> to see all previous changes. Each entry shows: timestamp, provider, model, masked API key preview, and who made the change.</p></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- SLIDE 18: ENV CONFIG -->
+<div class="slide" data-title=".env Configuration">
+<div class="slide-inner">
+  <div class="slide-tag tb">Settings — Environment Configuration</div>
+  <h1 class="st">Environment Configuration (.env)</h1>
+  <p class="lead">All backend settings are in the <span class="mono">.env</span> file at the project root. This is the master configuration for the platform.</p>
+  <div class="split">
+    <div>
+      <h2 class="sh">📄 Full .env Reference</h2>
+      <div class="cb" style="font-size:11px">
+<span class="cm"># ── LLM Provider ──────────────────────</span>
+<span class="cm"># gemini | openai | groq | ollama</span>
+<span class="kw">LLM_PROVIDER</span>=<span class="val">gemini</span>
+<span class="kw">GEMINI_API_KEY</span>=<span class="str">AIzaSy...</span>
+<span class="kw">GEMINI_MODEL</span>=<span class="val">gemini-2.0-flash</span>
+<span class="kw">GROQ_API_KEY</span>=<span class="str">gsk_your_key</span>
+<span class="kw">GROQ_MODEL</span>=<span class="val">llama-3.1-8b-instant</span>
+<span class="kw">OPENAI_API_KEY</span>=<span class="str">sk-...</span>
+<span class="kw">OPENAI_MODEL</span>=<span class="val">gpt-4o</span>
+<span class="kw">OLLAMA_BASE_URL</span>=<span class="val">http://localhost:11434</span>
+<span class="kw">OLLAMA_MODEL</span>=<span class="val">llama3</span>
+
+<span class="cm"># ── Storage ────────────────────────────</span>
+<span class="kw">CHROMA_PERSIST_DIR</span>=<span class="val">./data/chroma</span>
+<span class="kw">UPLOAD_DIR</span>=<span class="val">./data/uploads</span>
+<span class="kw">AUDIT_LOG_DIR</span>=<span class="val">./data/audit</span>
+<span class="kw">XSD_DIR</span>=<span class="val">./data/xsd</span>
+<span class="kw">SQLITE_DB_PATH</span>=<span class="val">./data/events.db</span>
+
+<span class="cm"># ── Security ───────────────────────────</span>
+<span class="cm"># Generate: python -c "import secrets;print(secrets.token_hex(32))"</span>
+<span class="kw">SECRET_KEY</span>=<span class="val">CHANGE_ME_IN_PRODUCTION</span>
+      </div>
+    </div>
+    <div>
+      <h2 class="sh">🔑 Switching to Groq</h2>
+      <ol class="sl">
+        <li>Get key from <a href="https://console.groq.com" style="color:var(--primary)">console.groq.com</a></li>
+        <li>Open <code class="mono">.env</code> in a text editor</li>
+        <li>Set <code>LLM_PROVIDER=groq</code></li>
+        <li>Set <code>GROQ_API_KEY=gsk_your_key</code></li>
+        <li>Set <code>GROQ_MODEL=llama-3.1-8b-instant</code></li>
+        <li>Restart backend: <code>uvicorn main:app --reload</code></li>
+      </ol>
+      <h2 class="sh" style="margin-top:16px">🌐 Frontend .env</h2>
+      <div class="cb" style="font-size:12px">
+<span class="cm"># frontend/.env.local</span>
+<span class="kw">NEXT_PUBLIC_API_URL</span>=<span class="val">http://localhost:8000</span>
+      </div>
+      <div class="co cor" style="margin-top:12px"><div class="co-icon">🚨</div><div class="co-body"><div class="co-title">Change SECRET_KEY Before Production!</div>The default key is insecure. Generate: <br/><code style="font-size:11px">python -c "import secrets; print(secrets.token_hex(32))"</code><br/>Changing it immediately invalidates all active sessions.</div></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- SLIDE 19: ADMIN PANEL -->
+<div class="slide" data-title="Admin Panel">
+<div class="slide-inner">
+  <div class="slide-tag tr">Module 8 — Admin Panel</div>
+  <h1 class="st">Admin Panel</h1>
+  <p class="lead">At <span class="mono">/admin</span> — accessible only to users with <strong>admin role</strong>. Provides platform management and monitoring.</p>
+  <div class="co cor" style="margin-bottom:20px"><div class="co-icon">🔒</div><div class="co-body"><div class="co-title">Admin Access Required</div>Regular analyst users are redirected to login with "Unauthorized". Contact your system admin to be promoted to admin role.</div></div>
+  <div class="split">
+    <div>
+      <h2 class="sh">📊 Platform Stats</h2>
+      <div class="cg g2" style="gap:10px">
+        <div class="card" style="padding:14px;text-align:center"><div style="font-size:24px;font-weight:800;color:var(--primary)">3</div><div style="font-size:11px;color:var(--text2)">Total Users</div></div>
+        <div class="card" style="padding:14px;text-align:center"><div style="font-size:24px;font-weight:800;color:var(--warning)">12</div><div style="font-size:11px;color:var(--text2)">Documents Indexed</div></div>
+      </div>
+      <h2 class="sh" style="margin-top:16px">⚙️ System Information</h2>
+      <table class="dt">
+        <tbody>
+          <tr><td>App Version</td><td>1.0.0</td></tr>
+          <tr><td>LLM Provider</td><td>Real-time readout</td></tr>
+          <tr><td>ChromaDB size</td><td>Real-time MB</td></tr>
+          <tr><td>Uploads storage</td><td>Real-time MB + count</td></tr>
+          <tr><td>Python version</td><td>From runtime</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h2 class="sh">👥 User Management</h2>
+      <ol class="sl">
+        <li>View all users: username, email, role, active status, created date</li>
+        <li>Toggle <strong>Active/Inactive</strong> to enable or disable access</li>
+        <li>Change user <strong>Role</strong>: analyst ↔ admin</li>
+        <li>View per-user activity statistics</li>
+        <li>Delete inactive users</li>
+      </ol>
+      <h2 class="sh" style="margin-top:16px">🏥 Module Health Monitor</h2>
+      <div class="card"><p class="body">Real-time health status of each backend module:</p>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          <span class="badge bp">translate ✅</span>
+          <span class="badge bp">learn ✅</span>
+          <span class="badge bp">documents ✅</span>
+          <span class="badge bp">audit ✅</span>
+          <span class="badge bp">auth ✅</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- SLIDE 20: NAVIGATION REFERENCE -->
+<div class="slide" data-title="Navigation Reference">
+<div class="slide-inner">
+  <div class="slide-tag tb">Navigation Reference</div>
+  <h1 class="st">Complete Sidebar Navigation Reference</h1>
+  <table class="dt">
+    <thead><tr><th>Sidebar Item</th><th>Route</th><th>Access</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>🏠 <strong>Dashboard</strong></td><td class="mono">/</td><td>All users</td><td>Platform stats, live telemetry, recent audit log</td></tr>
+      <tr><td>↔️ <strong>MT → MX Engine</strong></td><td class="mono">/translate</td><td>All users</td><td>Translate SWIFT MT to ISO 20022 XML with validation</td></tr>
+      <tr><td>⬅️ <strong>MX → MT Engine</strong></td><td class="mono">/mx-translate</td><td>All users</td><td>Reverse translate ISO 20022 XML back to SWIFT MT</td></tr>
+      <tr><td>📚 <strong>Knowledge</strong></td><td class="mono">/learn</td><td>All users</td><td>AI-powered RAG chatbot for SWIFT/ISO 20022 queries</td></tr>
+      <tr><td>💡 <strong>Prompt Lab</strong></td><td class="mono">/prompt-engineering</td><td>All users</td><td>Interactive prompt engineering course (banking context)</td></tr>
+      <tr><td>📄 <strong>Documents</strong></td><td class="mono">/documents</td><td>All users</td><td>Upload &amp; AI-query PDF/DOCX compliance documents</td></tr>
+      <tr><td>🛡️ <strong>Audit &amp; Telemetry</strong></td><td class="mono">/audit</td><td>All users</td><td>Filtered paginated audit log + real-time event stream</td></tr>
+      <tr><td>⚙️ <strong>LLM Settings</strong></td><td>Sidebar Panel</td><td>All users</td><td>Switch AI provider/model, manage API keys, view history</td></tr>
+      <tr><td>🔧 <strong>Admin</strong></td><td class="mono">/admin</td><td>Admin only</td><td>User management, system health, platform stats</td></tr>
+    </tbody>
+  </table>
+  <div class="split" style="margin-top:20px">
+    <div><h2 class="sh">📡 Sidebar Status Indicators</h2><div class="card"><ul class="bl"><li><strong>Health dot</strong> — green (nominal) or red (degraded) — every 30s</li><li><strong>Uptime counter</strong> — shows frontend session uptime HH:MM:SS</li><li><strong>Active route highlight</strong> — current page highlighted</li></ul></div></div>
+    <div><h2 class="sh">🔝 Top Bar</h2><div class="card"><ul class="bl"><li><strong>Current module name</strong> — which page you're on</li><li><strong>User badge</strong> — username and role (analyst/admin)</li><li><strong>Logout button</strong> — clears session → login page</li></ul></div></div>
+  </div>
+</div></div>
+
+<!-- SLIDE 21: STARTING THE APPLICATION -->
+<div class="slide" data-title="Starting the Application">
+<div class="slide-inner">
+  <div class="slide-tag tg">Operations Guide</div>
+  <h1 class="st">Starting the Application</h1>
+  <p class="lead">Two processes required simultaneously — FastAPI backend and Next.js frontend. Open two separate terminal windows.</p>
+  <div class="split">
+    <div>
+      <h2 class="sh">🖥️ Terminal 1 — Backend</h2>
+      <div class="cb"><span class="cm"># Navigate to backend directory</span>
+<span class="kw">cd</span> <span class="str">"e:\D Drive\WirePaymentAssistance\backend"</span>
+<span class="cm"># Start with hot-reload</span>
+<span class="kw">uvicorn</span> main:app <span class="val">--reload --host</span> 0.0.0.0 <span class="val">--port</span> 8000
+<span class="cm"># Expected output:</span>
+<span class="cm"># INFO: Application startup complete.</span></div>
+      <h2 class="sh" style="margin-top:16px">🌐 Terminal 2 — Frontend</h2>
+      <div class="cb"><span class="cm"># Navigate to frontend directory</span>
+<span class="kw">cd</span> <span class="str">"e:\D Drive\WirePaymentAssistance\frontend"</span>
+<span class="kw">npm</span> run dev
+<span class="cm"># Expected output:</span>
+<span class="cm"># Local: http://localhost:3000</span></div>
+    </div>
+    <div>
+      <h2 class="sh">🔗 URLs</h2>
+      <table class="dt"><tbody>
+        <tr><td><strong>Frontend App</strong></td><td class="mono">http://localhost:3000</td></tr>
+        <tr><td><strong>Backend API</strong></td><td class="mono">http://localhost:8000</td></tr>
+        <tr><td><strong>API Docs (Swagger)</strong></td><td class="mono">http://localhost:8000/docs</td></tr>
+        <tr><td><strong>Health Check</strong></td><td class="mono">http://localhost:8000/health</td></tr>
+        <tr><td><strong>API ReDoc</strong></td><td class="mono">http://localhost:8000/redoc</td></tr>
+      </tbody></table>
+      <h2 class="sh" style="margin-top:16px">🔄 Restart Rules</h2>
+      <div class="card"><ul class="bl"><li><strong>Backend restart</strong> — you stay logged in (JWT is stateless)</li><li><strong>.env changes</strong> — always restart backend after editing</li><li><strong>SECRET_KEY change</strong> — all users logged out immediately</li><li><strong>Frontend restart</strong> — session restored from cookie automatically</li></ul></div>
+      <div class="co cob"><div class="co-icon">💡</div><div class="co-body"><div class="co-title">First-Time Setup Checklist</div>✅ Set GEMINI_API_KEY in .env<br/>✅ Change SECRET_KEY to secure random<br/>✅ Start backend, then frontend<br/>✅ Register → OTP → login<br/>✅ Upload your first document</div></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- SLIDE 22: CBPR+ RULES -->
+<div class="slide" data-title="CBPR+ R2025 Rules">
+<div class="slide-inner">
+  <div class="slide-tag ty">Compliance Reference</div>
+  <h1 class="st">CBPR+ R2025 Rules Enforced by the Platform</h1>
+  <p class="lead">Automatically enforced during translation. Violations cause errors in Strict mode and warnings in Full mode.</p>
+  <table class="dt">
+    <thead><tr><th>Rule</th><th>Requirement</th><th>Error Message if Violated</th></tr></thead>
+    <tbody>
+      <tr><td><strong>UETR Mandatory</strong></td><td>Every pacs.008/009/004 must contain valid UUID4 UETR in PmtId</td><td>pacs.008: &lt;PmtId&gt;&lt;UETR&gt; is mandatory under CBPR+ R2025</td></tr>
+      <tr><td><strong>ChrgBr = SHAR only</strong></td><td>For pacs.008 interbank, only SHAR allowed (OUR/DEBT and BEN/CRED rejected)</td><td>ChrgBr value 'DEBT' not permitted at interbank level</td></tr>
+      <tr><td><strong>PostalAddress Hybrid</strong></td><td>Dbtr/Cdtr postal address must include &lt;TwnNm&gt; and &lt;Ctry&gt; (ISO 2-letter)</td><td>&lt;Dbtr&gt;&lt;PstlAdr&gt;&lt;TwnNm&gt; is mandatory in CBPR+ R2025</td></tr>
+      <tr><td><strong>BIC Format</strong></td><td>All BICs must be 8 or 11 characters</td><td>Invalid BIC format detected</td></tr>
+      <tr><td><strong>Country Code ISO</strong></td><td>Country codes must be valid ISO 2-letter (US, DE, GB — not USA)</td><td>&lt;Ctry&gt; value 'USA' must be a valid ISO 2-letter country code</td></tr>
+      <tr><td><strong>Date Format</strong></td><td>:32A: date YYMMDD converted to YYYY-MM-DD ISO format</td><td>Invalid settlement date</td></tr>
+      <tr><td><strong>Amount Format</strong></td><td>MT amounts use comma as decimal (50000,00 → 50000.00 in XML)</td><td>Amount parsing error</td></tr>
+      <tr><td><strong>pacs.009 No Retail</strong></td><td>pacs.009 CORE must not contain UltmtDbtr or UltmtCdtr</td><td>pacs.009 CORE must not contain &lt;UltmtDbtr&gt;</td></tr>
+    </tbody>
+  </table>
+  <div class="co cob" style="margin-top:16px"><div class="co-icon">📅</div><div class="co-body"><div class="co-title">CBPR+ R2025 Effective Date</div>Became mandatory on <strong>November 22, 2025</strong>. MT103 and MT202 retired from SWIFT FINplus. All cross-border transactions must use ISO 20022 pacs.008/009.</div></div>
+</div></div>
+
+<!-- SLIDE 23: API REFERENCE -->
+<div class="slide" data-title="API Reference">
+<div class="slide-inner">
+  <div class="slide-tag tb">Developer Reference — REST API</div>
+  <h1 class="st">REST API Quick Reference</h1>
+  <p class="lead">FastAPI backend at <span class="mono">http://localhost:8000</span>. Full interactive docs at <span class="mono">/docs</span> (Swagger UI).</p>
+  <div class="split">
+    <div>
+      <h2 class="sh">🔐 Authentication</h2>
+      <table class="dt">
+        <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td class="mono" style="color:var(--success)">POST</td><td class="mono">/api/v1/auth/register</td><td>Create new user account</td></tr>
+          <tr><td class="mono" style="color:var(--success)">POST</td><td class="mono">/api/v1/auth/login</td><td>Login and get JWT tokens</td></tr>
+          <tr><td class="mono" style="color:var(--success)">POST</td><td class="mono">/api/v1/auth/verify-otp</td><td>Verify email OTP</td></tr>
+          <tr><td class="mono" style="color:var(--primary)">GET</td><td class="mono">/api/v1/auth/me</td><td>Get current user info</td></tr>
+          <tr><td class="mono" style="color:var(--success)">POST</td><td class="mono">/api/v1/auth/logout</td><td>Logout and revoke token</td></tr>
+        </tbody>
+      </table>
+      <h2 class="sh" style="margin-top:16px">🔄 Translation</h2>
+      <table class="dt">
+        <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td class="mono" style="color:var(--success)">POST</td><td class="mono">/api/v1/translate</td><td>MT → MX translation</td></tr>
+          <tr><td class="mono" style="color:var(--primary)">GET</td><td class="mono">/api/v1/translate/sample/{type}</td><td>Get sample MT message</td></tr>
+          <tr><td class="mono" style="color:var(--success)">POST</td><td class="mono">/api/v1/mx-translate</td><td>MX → MT translation</td></tr>
+          <tr><td class="mono" style="color:var(--success)">POST</td><td class="mono">/api/v1/mx-translate/cover</td><td>pacs.008 → Cover pacs.009</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h2 class="sh">📚 Knowledge &amp; Documents</h2>
+      <table class="dt">
+        <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td class="mono" style="color:var(--success)">POST</td><td class="mono">/api/v1/learn/query</td><td>Ask the knowledge base</td></tr>
+          <tr><td class="mono" style="color:var(--primary)">GET</td><td class="mono">/api/v1/learn/topics</td><td>List available topics</td></tr>
+          <tr><td class="mono" style="color:var(--success)">POST</td><td class="mono">/api/v1/documents/upload</td><td>Upload &amp; index a document</td></tr>
+          <tr><td class="mono" style="color:var(--primary)">GET</td><td class="mono">/api/v1/documents/list</td><td>List indexed documents</td></tr>
+          <tr><td class="mono" style="color:var(--success)">POST</td><td class="mono">/api/v1/documents/query</td><td>Query documents</td></tr>
+          <tr><td class="mono" style="color:var(--danger)">DELETE</td><td class="mono">/api/v1/documents/{id}</td><td>Delete a document</td></tr>
+        </tbody>
+      </table>
+      <h2 class="sh" style="margin-top:16px">🛡️ Audit &amp; System</h2>
+      <table class="dt">
+        <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td class="mono" style="color:var(--primary)">GET</td><td class="mono">/api/v1/audit/logs</td><td>Paginated audit log</td></tr>
+          <tr><td class="mono" style="color:var(--primary)">GET</td><td class="mono">/api/v1/audit/export</td><td>Export full audit log JSON</td></tr>
+          <tr><td class="mono" style="color:var(--primary)">GET</td><td class="mono">/events</td><td>SSE real-time event stream</td></tr>
+          <tr><td class="mono" style="color:var(--primary)">GET</td><td class="mono">/health</td><td>Platform health check</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div></div>
+
+<!-- SLIDE 24: TROUBLESHOOTING -->
+<div class="slide" data-title="Troubleshooting">
+<div class="slide-inner">
+  <div class="slide-tag tr">Troubleshooting</div>
+  <h1 class="st">Common Issues &amp; Solutions</h1>
+  <table class="dt">
+    <thead><tr><th>Problem</th><th>Likely Cause</th><th>Solution</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Dashboard shows "SYSTEM DEGRADED"</strong></td><td>Backend not running or crashed</td><td>Start backend: <code class="mono">uvicorn main:app --reload</code></td></tr>
+      <tr><td><strong>Login redirects in a loop</strong></td><td>Stale cookies from expired session</td><td>DevTools → Application → Clear cookies → Reload</td></tr>
+      <tr><td><strong>Translation returns 422 error</strong></td><td>CBPR+ rule violation in strict mode</td><td>Enable <strong>Full Translation Mode</strong>, or fix the MT field causing the error</td></tr>
+      <tr><td><strong>Groq: 404 model_not_found</strong></td><td>Model not available on your key tier</td><td>Use <code class="mono">llama-3.1-8b-instant</code> in GROQ_MODEL</td></tr>
+      <tr><td><strong>Groq: 400 model_decommissioned</strong></td><td>Old model IDs (llama3-70b-8192)</td><td>Update GROQ_MODEL to <code class="mono">llama-3.1-8b-instant</code> and restart</td></tr>
+      <tr><td><strong>Gemini API error</strong></td><td>Models 1.5, 2.0-flash-lite shut down Jun 2026</td><td>Use <code class="mono">gemini-2.0-flash</code> or newer in .env</td></tr>
+      <tr><td><strong>Document upload fails</strong></td><td>Unsupported format or permission issue</td><td>Use PDF or DOCX. Check server upload_dir has write permissions</td></tr>
+      <tr><td><strong>OTP email not received</strong></td><td>Spam filter or SMTP not configured</td><td>Check spam folder; verify SMTP settings in .env</td></tr>
+      <tr><td><strong>Admin panel "Unauthorized"</strong></td><td>Logged in as analyst role</td><td>Ask an admin to promote your account to admin role</td></tr>
+      <tr><td><strong>XML output missing fields</strong></td><td>Source MT message missing optional fields</td><td>Optional MT fields produce optional XML — expected behaviour</td></tr>
+      <tr><td><strong>Cannot access app at all</strong></td><td>Backend or frontend not started</td><td>Run both: <code class="mono">uvicorn main:app --reload</code> and <code class="mono">npm run dev</code></td></tr>
+    </tbody>
+  </table>
+</div></div>
+
+<!-- SLIDE 25: GLOSSARY -->
+<div class="slide" data-title="Glossary">
+<div class="slide-inner">
+  <div class="slide-tag tb">Glossary</div>
+  <h1 class="st">Glossary of Terms</h1>
+  <div class="split">
+    <div>
+      <table class="dt">
+        <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td><strong>MT</strong></td><td>Message Type — SWIFT's legacy financial message format (e.g. MT103)</td></tr>
+          <tr><td><strong>MX</strong></td><td>Message eXchange — ISO 20022 XML-based financial messages (e.g. pacs.008)</td></tr>
+          <tr><td><strong>ISO 20022</strong></td><td>International standard for financial messaging using XML schemas</td></tr>
+          <tr><td><strong>SWIFT</strong></td><td>Society for Worldwide Interbank Financial Telecommunication</td></tr>
+          <tr><td><strong>CBPR+</strong></td><td>Cross-Border Payments &amp; Reporting Plus — SWIFT's ISO 20022 cross-border standard</td></tr>
+          <tr><td><strong>LYNX</strong></td><td>High-value domestic payment system operated by Payments Canada</td></tr>
+          <tr><td><strong>UETR</strong></td><td>Unique End-to-End Transaction Reference — mandatory UUID4 for all transactions</td></tr>
+          <tr><td><strong>pacs.008</strong></td><td>ISO 20022: FI-to-FI Customer Credit Transfer (replaces MT103)</td></tr>
+          <tr><td><strong>pacs.009</strong></td><td>ISO 20022: FI-to-FI Credit Transfer CORE/COV (replaces MT202)</td></tr>
+          <tr><td><strong>pacs.004</strong></td><td>ISO 20022: Payment Return (replaces MT103RETURN/MT202RETURN)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <table class="dt">
+        <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td><strong>XSD</strong></td><td>XML Schema Definition — defines structure and rules for ISO 20022 XML</td></tr>
+          <tr><td><strong>BIC</strong></td><td>Bank Identifier Code — 8 or 11 char bank identifier (e.g. DEUTDEBB)</td></tr>
+          <tr><td><strong>IBAN</strong></td><td>International Bank Account Number — standardized account format</td></tr>
+          <tr><td><strong>ChrgBr</strong></td><td>Charge Bearer — who pays charges (SHAR=SHA, DEBT=OUR, CRED=BEN)</td></tr>
+          <tr><td><strong>LLM</strong></td><td>Large Language Model — AI model powering Knowledge Base and Prompt Lab</td></tr>
+          <tr><td><strong>RAG</strong></td><td>Retrieval-Augmented Generation — combining document search with AI generation</td></tr>
+          <tr><td><strong>JWT</strong></td><td>JSON Web Token — stateless authentication token for session management</td></tr>
+          <tr><td><strong>OTP</strong></td><td>One-Time Password — 6-digit email verification code on registration</td></tr>
+          <tr><td><strong>SSE</strong></td><td>Server-Sent Events — real-time data streaming from server to browser</td></tr>
+          <tr><td><strong>BAH</strong></td><td>Business Application Header — ISO 20022 envelope wrapping MX messages</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div></div>
+
+<!-- SLIDE 26: SUMMARY -->
+<div class="slide" data-title="Summary">
+<div class="slide-inner">
+  <div class="cover" style="min-height:auto;padding:60px 0">
+    <div class="slide-tag tg">✅ You're All Set!</div>
+    <h1 class="hero gt" style="font-size:42px">You Now Know The Platform</h1>
+    <p class="lead" style="max-width:600px;margin:0 auto 40px">You've covered every feature of The Compliance Leader — from registration to advanced translation, AI knowledge, and administration.</p>
+    <div class="cg g3" style="max-width:900px;margin:0 auto;text-align:left">
+      <div class="mc"><div class="mi" style="background:rgba(0,229,160,0.1)">1</div><div><div class="mn">Register &amp; Login</div><div class="md">OTP email verification, JWT sessions, auth guard</div></div></div>
+      <div class="mc"><div class="mi" style="background:rgba(0,212,255,0.1)">2</div><div><div class="mn">MT → MX Translation</div><div class="md">10 MT types, CBPR+/LYNX, Full &amp; Partial modes</div></div></div>
+      <div class="mc"><div class="mi" style="background:rgba(0,212,255,0.1)">3</div><div><div class="mn">MX → MT Reversal</div><div class="md">Reverse translation + Cover payment generation</div></div></div>
+      <div class="mc"><div class="mi" style="background:rgba(123,47,190,0.15)">4</div><div><div class="mn">Knowledge Base</div><div class="md">RAG-powered SWIFT/ISO 20022 Q&amp;A with source citations</div></div></div>
+      <div class="mc"><div class="mi" style="background:rgba(123,47,190,0.15)">5</div><div><div class="mn">Prompt Lab</div><div class="md">8 prompt engineering topics with banking examples</div></div></div>
+      <div class="mc"><div class="mi" style="background:rgba(255,184,0,0.1)">6</div><div><div class="mn">Document Intelligence</div><div class="md">Upload PDFs → AI-query compliance content</div></div></div>
+      <div class="mc"><div class="mi" style="background:rgba(0,229,160,0.1)">7</div><div><div class="mn">Audit &amp; Telemetry</div><div class="md">Cryptographic audit trail + real-time event stream</div></div></div>
+      <div class="mc"><div class="mi" style="background:rgba(0,212,255,0.1)">8</div><div><div class="mn">LLM Settings</div><div class="md">Gemini / Groq / OpenAI / Ollama — live switching</div></div></div>
+      <div class="mc"><div class="mi" style="background:rgba(255,77,109,0.1)">9</div><div><div class="mn">Admin Panel</div><div class="md">User management, health monitor, platform stats</div></div></div>
+    </div>
+    <div style="margin-top:40px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <a href="http://localhost:3000" target="_blank"><button class="nav-btn pb">🚀 Open Application</button></a>
+      <a href="http://localhost:8000/docs" target="_blank"><button class="nav-btn">📖 API Documentation</button></a>
+      <button class="nav-btn" onclick="goTo(0)">⬅️ Back to Start</button>
+    </div>
+  </div>
+</div></div>
+
+</div><!-- end .presentation -->
+
+<div class="nav-bar">
+  <div style="font-size:12px;color:var(--text3);min-width:200px"><strong style="color:var(--text2)" id="navTitle">Cover</strong></div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="nav-btn" onclick="prev()" id="prevBtn" disabled>← Previous</button>
+    <span class="slide-counter" id="ctr">1 / 26</span>
+    <button class="nav-btn pb" onclick="next()" id="nextBtn">Next →</button>
+  </div>
+  <div style="min-width:200px;text-align:right;font-size:11px;color:var(--text3)">← → arrow keys · T = Table of Contents</div>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide'),total=slides.length;let cur=0;
+function goTo(n){slides[cur].classList.remove('active');cur=Math.max(0,Math.min(n,total-1));slides[cur].classList.add('active');slides[cur].scrollTop=0;upd();}
+function next(){if(cur<total-1)goTo(cur+1);}
+function prev(){if(cur>0)goTo(cur-1);}
+function upd(){
+  document.getElementById('ctr').textContent=`${cur+1} / ${total}`;
+  document.getElementById('prevBtn').disabled=cur===0;
+  document.getElementById('nextBtn').disabled=cur===total-1;
+  document.getElementById('pb').style.width=`${((cur+1)/total)*100}%`;
+  document.getElementById('navTitle').textContent=slides[cur].dataset.title||'';
+  document.querySelectorAll('.toc-item').forEach((el,i)=>el.classList.toggle('cur',i===cur));
+}
+function buildTOC(){
+  const p=document.getElementById('toc');
+  slides.forEach((s,i)=>{
+    const el=document.createElement('div');
+    el.className='toc-item'+(i===0?' cur':'');
+    el.innerHTML=`<span class="toc-num">${i+1}</span>${s.dataset.title||''}`;
+    el.onclick=()=>{goTo(i);toggleTOC();};
+    p.appendChild(el);
+  });
+}
+function toggleTOC(){document.getElementById('toc').classList.toggle('open');}
+document.addEventListener('click',e=>{if(!e.target.closest('.toc-nav'))document.getElementById('toc').classList.remove('open');});
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();next();}
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();prev();}
+  if(e.key==='t'||e.key==='T')toggleTOC();
+  if(e.key==='Home')goTo(0);
+  if(e.key==='End')goTo(total-1);
+});
+buildTOC();upd();
+</script>
+</body>
+</html>
