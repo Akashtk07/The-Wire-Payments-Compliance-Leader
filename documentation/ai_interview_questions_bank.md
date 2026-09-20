@@ -1,10 +1,10 @@
-# 🧠 THE ULTIMATE AI / ML / RAG INTERVIEW QUESTION BANK
+#  THE ULTIMATE AI / ML / RAG INTERVIEW QUESTION BANK
 
 This document contains a highly expanded, exhaustive list of Artificial Intelligence, Machine Learning, Generative AI, RAG, and AI Agent interview questions. It is designed to cover everything from basic ML concepts to cutting-edge GenAI production architectures.
 
 ---
 
-## 📑 TABLE OF CONTENTS
+##  TABLE OF CONTENTS
 1. [Machine Learning Fundamentals](#1-machine-learning-fundamentals)
 2. [Deep Learning & Neural Networks](#2-deep-learning--neural-networks)
 3. [NLP Fundamentals](#3-nlp-fundamentals)
