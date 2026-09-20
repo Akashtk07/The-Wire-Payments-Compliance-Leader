@@ -1601,5 +1601,3 @@ Database: SQLite → PostgreSQL with asyncpg. Vector DB: ChromaDB → Pinecone o
 ---
 
 *End of Master Document*
-
-> **Verified against:** `main.py`, `config.py`, `auth_service.py`, `audit_logger.py`, `telemetry_bus.py`, `llm_router.py`, `llm_config_store.py`, `rag_pipeline.py`, `mt_parser.py`, `mx_translator.py`, `mx_parser.py`, `mt_builder.py`, `validator.py`, `translate.py`, `mx_translate.py`, `auth.py`, `admin.py`, `learn.py`, `documents.py`, `audit.py`, `prompt_engineering.py`, `middleware.ts`, `docker-compose.yml`, `requirements.txt`
